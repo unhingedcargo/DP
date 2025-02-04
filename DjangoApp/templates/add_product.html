@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Add Product
+{% endblock %}
+
+
+{% block body %}
+<div class='container'>
+	
+
+	<div class="row">
+		<div class="col-10">
+			
+		</div>
+		<div class="col-2">
+			<a class="btn btn-primary mb-4" href="{% url 'add_product' %}">+New</a>
+			<a class="btn btn-light mb-4" href=""><span class="material-symbols-outlined">more_vert</span></a>
+		</div>
+	</div>
+
+	<div class="row">
+		<form class="form-control" method="POST" action="">
+			{% csrf_token %}
+			{{ form.as_p }}
+
+			<button type="submit" class="btn btn-primary">Add Product</button>
+        	<a class="btn btn-secondary" href="{% url 'product' %}">Back</a>
+		</form>
+	</div>
+
+</div>    
+{% endblock %}

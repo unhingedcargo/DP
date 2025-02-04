@@ -1,0 +1,280 @@
+{% extends "base.html" %} 
+{% block title %} 
+New Estimate 
+{% endblock %} 
+{% block body %}
+<form action="" method="POST" id="estimate_form">
+  {% csrf_token %}
+  <div class="container mt-5">
+    <h2 class="text-center mt-4 mb-4 text-uppercase text-success">
+      Estimate
+    </h2>
+
+    <div class="row mb-4">
+      <div class="col-2">
+        <div class="">
+          <label for="jobno">Job No</label>
+        </div>
+
+        <div class="">
+          <input
+            type="text"
+            name="jobno"
+            id="jobno"
+            class="form-control fs-5 fw-bolder text-danger"
+            value="{{jobno}}"
+            maxlength="4"
+          />
+        </div>
+      </div>
+
+      <div class="col-4"></div>
+
+      <div class="col-2">
+        <div class="">
+          <label for="date">Job Date</label>
+        </div>
+
+        <div class="">
+          <input
+            type="text"
+            name="job_date"
+            id="job_date"
+            class="form-control fs-5 fw-bolder text-black"
+            value="{{date}}"
+            maxlength="11"
+          />
+        </div>
+      </div>
+
+      <div class="col-4"></div>
+    </div>
+
+    <div class="row mb-4">
+      <div class="col-4">
+        <div class="">
+          <label for="customer">Customer Name</label>
+        </div>
+
+        <div class="">
+          <input
+            type="text"
+            name="customer"
+            id="customer"
+            class="form-control fs-5 fw-bolder text-black"
+            value=""
+            maxlength="50"
+          />
+        </div>
+      </div>
+
+      <div class="col-2"></div>
+
+      <div class="col-2">
+        <div class="">
+          <label for="contact">Contact Number </label>
+        </div>
+
+        <div class="">
+          <input
+            type="tel"
+            name="contact"
+            id="contact"
+            class="form-control fs-5 fw-bolder text-black"
+            value=""
+            maxlength="10"
+          />
+        </div>
+      </div>
+
+      <div class="col-4"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-10">
+        <h3 class="text-center mt-3 mb-1 text-uppercase text-success">
+          Order Details
+        </h3>
+        <div class="container">
+          <table class="table" id="est_table">
+            <thead>
+              <tr class="text-center">
+                <!-- <th scope="col" class="col-1" >#</th> -->
+                <th scope="col" class="col-2">Product</th>
+                <th scope="col" class="col-4">Description</th>
+                <th scope="col" class="col-1">Qty</th>
+                <th scope="col" class="col-2">Rate</th>
+                <th scope="col" class="col-2">Amount</th>
+                <th scope="col" class="col-1">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for line in n %}
+              <tr class="row_item">
+                <!-- <th scope="row" id="serial">{{forloop.counter}}</th> -->
+                <td>
+                  <input
+                    list="products"
+                    name="product"
+                    id="product"
+                    class="form-control col"
+                    onchange="select_product()"
+                  />
+                  <datalist id="products">
+                    {% for product in products %}
+                    <option value="{{product.3}}">{% endfor %}</option>
+                  </datalist>
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    name="desc"
+                    id="desc"
+                    class="form-control"
+                    value=""
+                    maxlength="30"
+                    onclick="check()"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    name="qty"
+                    id="qty"
+                    class="form-control"
+                    value=""
+                    maxlength="6"
+                    onchange="calculate()"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    name="rate"
+                    id="rate"
+                    class="form-control"
+                    value=""
+                    maxlength="6"
+                    onchange="calculate()"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    name="total"
+                    id="total"
+                    class="form-control"
+                    value=""
+                    maxlength="8"
+                    onchange="do_nothing()"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="button"
+                    value="Delete"
+                    class="btn btn-outline-danger material-symbols-outlined"
+                    onclick="delete_row()"
+                    title="Delete this row"
+                  />
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-2"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-8"></div>
+      <div class="col-2">
+        <input
+          type="button"
+          value="Get Total Amount"
+          class="btn btn-outline-primary"
+          onclick="do_nothing()"
+          title="Get Total Amount"
+        />
+      </div>
+      <!-- <div class=" col-2"></div> -->
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-2 mt-5">
+        <input
+          type="button"
+          value="add_circle"
+          class="btn btn-outline-primary material-symbols-outlined"
+          onclick="add_row()"
+          title="Add new item"
+        />
+      </div>
+      <div class="col-4"></div>
+      <div class="col-2 mt-5">
+        <label for="total" class="fs-5 fw-bolder">Total Amount</label>
+      </div>
+      <div class="col-2 mt-5">
+        <input
+          type="text"
+          name="amount"
+          id="amount"
+          class="form-control"
+          value=""
+          maxlength="8"
+        />
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-6"></div>
+      <div class="col-2">
+        <label for="advance" class="fs-5 fw-bolder">Advance Amount</label>
+      </div>
+      <div class="col-2">
+        <input
+          type="text"
+          name="advance"
+          id="advance"
+          class="form-control"
+          value=""
+          maxlength="8"
+          onchange="show_balance()"
+        />
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-6 border-bottom"></div>
+      <div class="col-2 border-bottom pb-4">
+        <label for="balance" class="fs-5 fw-bolder">Balance Amount</label>
+      </div>
+      <div class="col-2 border-bottom">
+        <input
+          type="text"
+          name="balance"
+          id="balance"
+          class="form-control"
+          value=""
+          maxlength="8"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-6"></div>
+
+    <div class="btn-group col-2" role="group">
+      <input type="submit" value="Save Changes" class="btn btn-primary" />
+      <!-- <a type="submit" class="btn btn-primary" href="/save_estimate">Save Changes</a> -->
+    </div>
+    <div class="col-2">
+      <a type="reset" class="btn btn-light" href="/estimate">Reset</a>
+    </div>
+    <div class="col-2"></div>
+  </div>
+</form>
+
+{% endblock %}

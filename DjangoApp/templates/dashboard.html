@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Dashboard
+{% endblock %}
+
+
+{% block body %}
+
+<div class='container'>
+    <h2 class='text-center mt-4 mb-4 text-uppercase text-success fw-bold'>Dashboard</h2>
+    <table class="table table-hover">
+        <thead class='table-success'>
+          <tr>
+            <th scope="col col-1">Job No</th>
+            <th scope="col col-1">Date</th>
+            <th scope="col col-2">Customer</th>
+            <th scope="col col-1">Contact</th>
+            <th scope="col col-1">Amount</th>
+            <th scope="col col-1">Balance</th>
+            <th scope="col col-1">Job Status</th>
+            <th scope="col col-1">Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for row in master %}
+          <tr>
+            <td>{{row.0}}</td>
+            <td>{{row.1}}</td>
+            <td>{{row.2}}</td>
+            <td>{{row.3}}</td>
+            <td>{{row.4}}</td>
+            <td>{{row.6}}</td>
+            <td>{{row.7}}</td>
+            <td>
+                <a type="submit" class="btn btn-outline-info" href="dashboard/{{row.0}}" >View</a>
+                {% comment %} <a type="submit" class="btn btn-danger" href="#">Delete</a> {% endcomment %}
+
+            </td>
+            {% endfor %}
+          </tr>
+
+        </tbody>
+      </table>
+
+</div>    
+{% endblock %}

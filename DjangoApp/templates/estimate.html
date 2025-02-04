@@ -1,0 +1,234 @@
+{% extends "base.html" %} 
+{% load static %}
+
+{% block title %} 
+New Estimate 
+{% endblock %} 
+
+{% block body %}
+<div class="container">
+  <h1>New Estimate</h1>
+</div>
+<div class="container card">
+
+  <form action="" method="post">
+    {% csrf_token %}
+    
+    <div class="row">
+      <div class="col-9"></div>
+      <div class="col">
+        <div class="input-group mb-3 mt-3 text-end">
+          <span class="input-group-text fw-semibold" id="basic-addon1">Estimate Number</span>
+          <input type="text" class="form-control fw-bold fs-5 text-danger text-end" maxlength=5>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-9"></div>
+      <div class="col">
+        <div class="input-group mb-3 text-end fw-semibold">
+          <span class="input-group-text fw-semibold" id="basic-addon1">Estimate Date</span>
+          <input type="text" class="form-control fw-semibold fs-6 text-dark text-end" maxlength=11>
+          <!-- <a class="" href="">
+            <span class="input-group-text bg-secondary">
+              <img src="{% static 'ico/calendar.png' %}" alt="" height=28>
+            </span>
+          </a> -->
+        </div>
+      </div>
+    </div>
+    
+    <div class="input-group mb-3">
+      <span class="input-group-text fw-semibold">Customer Name</span>
+      <input type="text" class="form-control" maxlength=20 autofocus>
+      <span class="input-group-text fw-semibold">Contact No.</span>
+      <input type="text" class="form-control" maxlength=10>
+    </div>
+
+    <div class="row">
+      <div class="text-center bg-secondary bg-opacity-10 p-2 fs-5 mb-3 fw-semibold">Item Table</div>
+      <div class="col-1"></div>
+      <div class="col-10">
+      
+        <table class="table text-center mb-4" id="est_table">
+        <thead>
+          <tr class="fw-normal">
+            <!-- <th scope="col">#</th> -->
+          
+              <th scope="col" class="col-2 text-start">Item</th>
+              <th scope="col" class="col-2">Item Description</th>
+              <th scope="col" class="col-1">Quantity</th>
+              <th scope="col" class="col-1">Rate</th>
+              <th scope="col" class="col-2">Tax</th>
+              <th scope="col" class="col-2">Amount</th>
+              <th scope="col" class="col-1">Action</th>
+          </tr>
+        </thead>
+        
+        <tbody>
+          <tr>
+            <td>
+              <select class="form-select" name="product" id="product">
+                <option value=""></option>
+              </select>
+              <!-- <input type="text" name="item" id="item" class="form-control"> -->
+            </td>
+            <td>
+              <input type="text" name="desc" id="desc" class="form-control" maxlength=30>
+            </td>
+            <td>
+              <input type="text" name="qty" id="qty" class="form-control" maxlength=5>
+            </td>
+            <td>
+              <input type="text" name="rate" id="rate" class="form-control" maxlength=5>
+            </td>
+            <td>
+              <select class="form-select" name="tax" id="tax">
+                <option value=""></option>
+              </select>
+            </td>
+            <td>
+              <input type="text" name="details" id="amount" class="form-control" readonly disabled>              
+            </td>
+            <td>
+              <!-- <button type="button" class="btn-close" disabled aria-label="Close"></button> -->
+            </td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+    <div class="col-1"></div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-1"></div>
+    <div class="col-5">
+      <input type="button" class="btn btn-outline-primary" value="Add Row" onclick="add_row()">
+    </div>
+    <div class="col-5 card bg-primary bg-opacity-10">
+      <div class="row mt-2 mb-2">
+        <div class="col-4"><label class="fw-semibold fs-5">Sub Total</label></div>
+        <div class="col-2"></div>
+        <div class="col-6 text-end">
+          <label class="fw-semibold fs-5" for="">0.00</label>
+          <!-- <input type="text" class="form-control"> -->
+        </div>
+      </div>
+      <div class="row mt-2 mb-2">
+        <div class="col-3"> <label class="fw-normal fs-5">Discount</label> </div>
+        <div class="col-4">
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" aria-label="Text input with dropdown button">
+            <span class="input-group-text"><img src="{% static 'ico/black-rupee.svg' %}" alt="" height=20></span>
+           
+          </div>
+          
+          <!-- <select class="form-control" name="discount" id="discount">
+            <option value="1">1</option>
+          </select> -->
+          <!-- <input type="text" class="form-control"> -->
+        </div>
+        <div class="col-5 text-end"><label class="fw-semibold" for="">0.00</label></div>
+      </div>
+      {% if tax == True %}
+      <div class="row mt-2 mb-2">
+        <div class="col-3"><label class="fw-bold fs-6">SGST9 [9%]</label></div>
+        <div class="col-9 text-end"><label class="fw-semibold fs-6">0.00</label></div>
+        <!-- <div class="col-2 text-center"><label class="fw-semibold fs-6">|</label></div>
+        <div class="col-3"><label class="fw-bold fs-6">CGST9[9%]</label></div>
+        <div class="col-2 text-end"><label class="fw-semibold fs-6">0.00</label></div> -->
+      </div>
+      <div class="row mt-2 mb-2">
+        <!-- <div class="col-3"><label class="fw-bold fs-6">SGST9[9%]</label></div>
+        <div class="col-2 text-end"><label class="fw-semibold fs-6">0.00</label></div>
+        <div class="col-2 text-center"><label class="fw-semibold fs-6">|</label></div> -->
+        <div class="col-3"><label class="fw-bold fs-6">CGST9 [9%]</label></div>
+        <div class="col-9 text-end"><label class="fw-semibold fs-6">0.00</label></div>
+      </div>
+      {% else %}
+      <div class="row mt-2 mb-2">
+        <div class="col-3"><label class="fw-bold fs-6">IGST18 [18%]</label></div>
+        <div class="col-9 text-end"><label class="fw-semibold fs-6">0.00</label></div>
+      </div>
+      {% endif %}
+      <div class="row mt-2 mb-2">
+        <div class="col-4"><label class="fw-semibold fs-6">Advance</label></div>
+        <div class="col-2"></div>
+        <div class="col-6"><input type="text" class="form-control"></div>
+      </div>
+      <div class="row mt-2 mb-2">
+        <div class="col-4"><label class="fw-semibold fs-6">Rounding-off</label></div>
+        <div class="col-2"></div>
+        <div class="col-6"><input type="text" class="form-control"></div>
+      </div>
+      <div class="row mt-2 mb-2">
+        <div class="col-4"><label class="fw-semibold fs-5">Total</label></div>
+        <div class="col-2"></div>
+        <div class="col-6"><input type="text" class="form-control"></div>
+      </div>
+        
+    </div>
+    <div class="col-1"></div>
+  </div>
+
+
+
+  </form>
+
+
+</div>
+
+<script>
+  function add_row() {
+    let table = document.getElementById('est_table');
+    console.log(table);
+    console.log("Estimate");
+    const newRow = table.insertRow();
+
+    const cell0 = newRow.insertCell(0);
+    const cell1 = newRow.insertCell(1);
+    const cell2 = newRow.insertCell(2);
+    const cell3 = newRow.insertCell(3);
+    const cell4 = newRow.insertCell(4);
+    const cell5 = newRow.insertCell(5);
+    const cell6 = newRow.insertCell(6);
+
+
+    cell0.innerHTML = cell0.innerHTML + `<td> <select class="form-select" name="tax" id="tax">
+                <option value=""></option>
+              </select>
+              <!-- <input type="text" name="item" id="item" class="form-control"> --> </td>`
+    cell1.innerHTML = cell1.innerHTML + `<td> <input type="text" name="desc" id="desc" class="form-control" maxlength=30> </td>`
+    cell2.innerHTML = cell2.innerHTML + `<td> <input type="text" name="qty" id="qty" class="form-control" maxlength=5> </td>`
+    cell3.innerHTML = cell3.innerHTML + `<td> <input type="text" name="rate" id="rate" class="form-control" maxlength=5> </td>`
+    cell4.innerHTML = cell4.innerHTML + `<td>
+              <select class="form-select" name="tax" id="tax">
+                <option value=""></option>
+              </select>
+            </td>`
+    cell5.innerHTML = cell5.innerHTML + `<td>
+              <input type="text" name="details" id="amount" class="form-control" readonly disabled>              
+            </td>`
+    cell6.innerHTML = cell6.innerHTML + `<td>
+              <button type="button" class="btn-close" aria-label="Close" onclick="delete_row()"></button>
+            </td>`
+
+  }
+
+  function delete_row() {
+    let index, table = document.getElementById('est_table');
+    for(let i = 0; i<table.rows.length; i++) {
+
+        table.rows[i].cells[6].onclick = function() {
+            if (table.rows.length !== 2){
+                index = this.parentElement.rowIndex;
+                table.deleteRow(index);
+            }
+        }
+    }
+  }
+</script>
+
+{% endblock %}

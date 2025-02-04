@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+    {{jobno}}
+{% endblock %}
+
+{% block body %}
+
+<div class="container mt-5 mb-5">
+    <h2 class='text-center mt-4 mb-4 text-uppercase text-success col-10 border-bottom'>Estimate</h2>
+    <div class="row mt-5">
+        <div class="col-2">
+            <img src="{% static 'img/logo.jpg' %}" alt="" class="img-thumbnail">
+        </div>
+        
+        <div class="col-4 border">
+            <h2 class='text-start fw-bold text-uppercase col-10' style="font-size:3.8rem; color:#0A427D">PRINT PLUS</h2>
+            <p class="text-start fs-5" style="color:#0071A6">#37, Sri Shakthi, Sri Rama Layout, JP Nagar 7th Phase, Bengaluru - 560078<br>
+                Mob.: +91 9945071790, +91 8861534808<br>Email: printplus790@gmail.com</p>
+        </div>
+
+        <div class="col-4 border">
+            <div class="row fs-5">
+                <div class="col-8 text-end mt-4">
+                    Job No. :
+                </div>
+                <div class="col-4 mt-4">
+                    2218
+                </div>
+            </div>            
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock %}

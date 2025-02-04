@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}
+    HomePage
+{% endblock %}
+
+
+{% block body %}
+<div class='container-md'>
+
+    {% if user.is_authenticated %}
+        <h1 class="text-center">Records</h1>
+
+        {% if records %}
+         <table class="table table-hover">
+            <thead class='table-success'>
+              <tr>
+                <th scope="col col-1">Job No</th>
+                <th scope="col col-1">Date</th>
+                <th scope="col col-2">Customer</th>
+                <th scope="col col-1">Contact</th>
+                <th scope="col col-1">Amount</th>
+                <th scope="col col-1">Balance</th>
+                <th scope="col col-1">Job Status</th>
+                <th scope="col col-1">Action</th>
+              </tr>
+            </thead>
+        <tbody>
+            {% for record in records %}
+            <tr>
+            <td>{{ record.jobno}}</td>
+            <td>{{ record.customer}}</td>
+            <td>{{ record.contact}}</td>
+            <td>{{ record.amount}}</td>
+            <td>{{ record.advance}}</td>
+            <td>{{ record.balance}}</td>
+            </tr>
+
+            {% endfor %}
+        </tbody>
+        </table>
+        {% endif %}
+
+    {% else %}
+        <form method="POST" action="{% url 'home' %}">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-4"></div>
+                <div class="col-4">
+                    <h1 class="text-center">Login</h1>
+                    <div class="mb-3 mt-5">
+                        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="user_name" placeholder="User Name" required>
+                    </div>
+                    <div class="mb-3 mt-5">
+                        <input type="password" class="form-control" id="exampleInputPassword1" name="user_password" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-4">Submit</button>
+                </div>
+            </div>
+        </form>
+
+    {% endif %}
+
+
+</div>    
+{% endblock %}

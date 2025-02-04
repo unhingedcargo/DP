@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Customer
+{% endblock %}
+
+
+{% block body %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=more_vert" />
+	<div class="container">
+		<div class="row mb-4">
+			<div class="col-5">
+				
+			</div>
+			<div class="col-3 text-center">
+			
+			</div>
+
+      <div class="dropdown col-4 text-end">
+        <button class="btn btn-outline-primary" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <span class="material-symbols-outlined">more_vert</span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          
+          <li><a class="dropdown-item text-center link-danger" href="{% url 'delete_customer' cust=data.id %}"><strong>Delete</strong></a></li>
+          
+        </ul>
+      </div>
+		</div>
+    
+		<div class="card">
+			<h5 class="card-header">
+				{{data.customer}}
+			</h5>
+
+    <form action="" method="post">
+      {% csrf_token %}
+			<div class="card-body">
+				<div class="row mt-4 mb-4">
+            <div class="col-2">
+              <label for="pname">Customer : </label>
+            </div>
+            <div class="col-5">
+              <input class="form-control" type="text" value="{{data.customer}}" id="pname" name="customer">
+            </div>
+        </div>
+
+        <div class="row mt-4 mb-4">
+            <div class="col-2">
+              <label for="pcontact">Contact Number : </label>
+            </div>
+            <div class="col-5">
+              <input class="form-control" type="text" value="{{data.contact}}" id="pcontact" name="contact">
+            </div>
+        </div>
+
+        <div class="row mt-4 mb-4">
+            <div class="col-2">
+              <label for="pemail">Email ID : </label>
+            </div>
+            <div class="col-5">
+              <input class="form-control" type="text" value="{{data.email}}" id="pemail" name="email">
+            </div>
+        </div>
+
+        <div class="row mt-4 mb-4">
+            <div class="col-2">
+              <label for="pgst">GST Number : </label>
+            </div>
+            <div class="col-5">
+              <input class="form-control" type="text" value="{{data.gstin}}" id="pgst" name="gstin">
+            </div>
+        </div>
+
+        <div class="row mt-4 mb-4">
+            <div class="col-2">
+              <label for="pclos">Closing Balance : </label>
+            </div>
+            <div class="col-5">
+              <input class="form-control" type="text" value="{{data.closing_balance}}" id="pclos" name="balance">
+            </div>
+            <div class="col text-end me-4">
+              <button type="submit" class="btn btn-outline-primary">Update</button>
+					    <a class="btn btn-outline-secondary" href="{% url 'customer' %}">Back</a>
+            </div>
+        </div>
+  		</div>
+				
+    </form>
+
+		</div>
+
+</div>
+
+
+{% endblock %}

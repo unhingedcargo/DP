@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block title %}
+Update | {{ master.0.0 }}
+{% endblock %}
+
+
+{% block body %}
+
+<div class="container mt-5">
+    <h2 class='text-center mt-4 mb-4 text-uppercase text-success col-10'>Job Details</h2>
+
+    <div class="row mb-4">
+        <div class="col-2">
+            <div class="">
+                <label for="jobno">Job No</label>
+            </div>
+
+            <div class="">
+                <input type="text" id="jobno" class="form-control fs-5 fw-bolder text-danger" value="{{master.0.0}}" maxlength="4" readonly>
+            </div>
+        </div>
+
+        <div class="col-4"></div>
+
+        <div class="col-2">
+            <div class="">
+                <label for="date">Job Date</label>
+            </div>
+
+            <div class="">
+                <input type="text" id="date" class="form-control fs-5 fw-bolder text-black" value="{{master.0.1}}" maxlength="11" readonly>
+            </div>
+        </div>
+
+        <div class="col-4"></div>
+
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-4">
+            <div class="">
+                <label for="customer">Customer Name</label>
+            </div>
+
+            <div class="">
+                <input type="text" id="customer" class="form-control fs-5 fw-bolder text-black" value="{{master.0.2}}" maxlength="50">
+            </div>
+        </div>
+
+        <div class="col-2"></div>
+
+        <div class="col-2">
+            <div class="">
+                <label for="contact">Contact Number </label>
+            </div>
+
+            <div class="">
+                <input type="tel" id="contact" class="form-control fs-5 fw-bolder text-black" value="{{master.0.3}}" maxlength="10">
+            </div>
+        </div>
+
+        <div class="col-4"></div>
+
+    </div>
+
+    <h3 class='text-center mt-4 mb-4 text-uppercase text-success col-10'>Order Details</h3>
+
+    <div class="row">
+        <div class="col-10">
+            <table class="table">
+                <thead>
+                    <tr class="text-center">
+                        <th scope="col-1">#</th>
+                        <th scope="col-2">Product</th>
+                        <th scope="col-3">Description</th>
+                        <th scope="col-1">Qty</th>
+                        <th scope="col-1">Rate</th>
+                        <th scope="col-1">Amount</th>
+                        <th scope="col-2">Delete</th>
+                        <th scope="col-1">Add</th>
+
+                        <!-- <div class="col-2"></div> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for line in order %}
+                        <tr class="row_item">
+                            <th scope="row" id="serial">{{line.2}}</th>
+                            <td><input type="text" id="desc" class="form-control" value="{{line.3}}" maxlength="30"></td>
+                            <td><input type="text" id="item" class="form-control" value="{{line.4}}" maxlength="30"></td>
+                            <td><input type="text" id="qty" class="form-control" value="{{line.5}}" maxlength="3"></td>
+                            <td><input type="text" id="rate" class="form-control" value="{{line.6}}" maxlength="4"></td>
+                            <td><input type="text" id="total" class="form-control" value="{{line.7}}" maxlength="6"></td>
+                            <td><a type="submit" class="btn btn-outline-danger" href="#">Delete</a></td>
+                            <td><a type="submit" class="btn btn-outline-info" href="#">Add</a></td>
+                        </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+        <div class="col-2"></div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-6"></div>
+        <div class="col-2">
+            <label for="total" class="fs-5 fw-bolder">Total Amount</label>
+        </div>
+        <div class="col-2">
+            <input type="text" id="total" class="form-control" value="{{master.0.4}}" maxlength="6">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-6"></div>
+        <div class="col-2">
+            <label for="advance" class="fs-5 fw-bolder">Advance Amount</label>
+        </div>
+        <div class="col-2">
+            <input type="text" id="advance" class="form-control" value="{{master.0.5}}" maxlength="6">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-6 border-bottom"></div>
+        <div class="col-2 border-bottom pb-4">
+            <label for="balance" class="fs-5 fw-bolder">Balance Amount</label>
+        </div>
+        <div class="col-2 border-bottom">
+            <input type="text" id="balance" class="form-control" value="{{master.0.6}}" maxlength="6">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            
+        </div>
+
+        <div class="btn-group col-4" role="group">
+            <a type="submit" class="btn btn-primary" href="#">Save Changes</a>
+            <a type="reset" class="btn btn-light" href="">Reset</a>
+        </div>
+    </div>
+
+
+
+</div>
+{% endblock %}
