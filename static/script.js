@@ -44,39 +44,54 @@ function calculate(){
 }
 
 function delete_row() {
-    let index, table = document.getElementById('est_table');
+    let table = document.getElementById('est_table');
     for(let i = 0; i<table.rows.length; i++) {
 
-        table.rows[i].cells[5].onclick = function() {
+        table.rows[i].cells[6].onclick = function() {
             if (table.rows.length !== 2){
-                index = this.parentElement.rowIndex;
+                let index = this.parentElement.rowIndex;
                 table.deleteRow(index);
             }
         }
     }
 }
 
-function add_row(){
+function add_row() {
     let table = document.getElementById('est_table');
+    console.log(table);
+    console.log("Estimate");
     const newRow = table.insertRow();
-    const cell1 = newRow.insertCell(0);
-    const cell2 = newRow.insertCell(1);
-    const cell3 = newRow.insertCell(2);
-    const cell4 = newRow.insertCell(3);
-    const cell5 = newRow.insertCell(4);
-    const cell6 = newRow.insertCell(5);
 
-    cell1.innerHTML = cell1.innerHTML + `<td> <input list="products" name="product" id="product" class="form-control col">
-                            <datalist id="products">
-                                {% for product in products %}
-                                    <option value="{{product.3}}">
-                                {% endfor %}
-                            </datalist>
-                        </td>`
-    cell2.innerHTML = cell2.innerHTML + `<td><input type="text" id="desc" class="form-control" value="" maxlength="30"></td>`
-    cell3.innerHTML = cell3.innerHTML + `<td><input type="text" id="qty" class="form-control" value="" maxlength="6" onchange="calculate()"></td>`
-    cell4.innerHTML = cell4.innerHTML + `<td><input type="text" id="rate" class="form-control" value="" maxlength="6" onchange="calculate()"></td>`
-    cell5.innerHTML = cell5.innerHTML + `<td><input type="text" id="total" class="form-control" value="" maxlength="8" onchange="do_nothing()"></td>`
-    cell6.innerHTML = cell6.innerHTML + `<td><input type="button" value="Delete" class="btn btn-outline-danger material-symbols-outlined" onclick="delete_row()" title="Delete this row"></td>`
+    const cell0 = newRow.insertCell(0);
+    const cell1 = newRow.insertCell(1);
+    const cell2 = newRow.insertCell(2);
+    const cell3 = newRow.insertCell(3);
+    const cell4 = newRow.insertCell(4);
+    const cell5 = newRow.insertCell(5);
+    const cell6 = newRow.insertCell(6);
 
-}
+
+    cell0.innerHTML = cell0.innerHTML + `<td> <select class="form-select" name="tax" id="tax">
+                <option value=""></option>
+              </select>
+              <!-- <input type="text" name="item" id="item" class="form-control"> --> </td>`
+    cell1.innerHTML = cell1.innerHTML + `<td> <input type="text" name="desc" id="desc" class="form-control" maxlength=30> </td>`
+    cell2.innerHTML = cell2.innerHTML + `<td> <input type="text" name="qty" id="qty" class="form-control" maxlength=5 value=0.0> </td>`
+    cell3.innerHTML = cell3.innerHTML + `<td> <input type="text" name="rate" id="rate" class="form-control" maxlength=5 value=0.0> </td>`
+    cell4.innerHTML = cell4.innerHTML + `<td>
+              <select class="form-select" name="tax" id="tax">
+                <option value=""></option>
+              </select>
+            </td>`
+    cell5.innerHTML = cell5.innerHTML + `<td>
+              <input type="text" name="details" id="amount" class="form-control" readonly  value=0.0>              
+            </td>`
+    cell6.innerHTML = cell6.innerHTML + `<td>
+              <button type="button" class="btn-close" aria-label="Close" onclick="delete_row()"></button>
+            </td>`
+
+  }
+
+
+
+

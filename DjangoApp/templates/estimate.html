@@ -20,6 +20,7 @@ New Estimate
         <div class="input-group mb-3 mt-3 text-end">
           <span class="input-group-text fw-semibold" id="basic-addon1">Estimate Number</span>
           <input type="text" class="form-control fw-bold fs-5 text-danger text-end" maxlength=5>
+          
         </div>
       </div>
     </div>
@@ -69,19 +70,19 @@ New Estimate
         <tbody>
           <tr>
             <td>
-              <select class="form-select" name="product" id="product">
+              <!-- <select class="form-select" name="product" id="product">
                 <option value=""></option>
-              </select>
-              <!-- <input type="text" name="item" id="item" class="form-control"> -->
+              </select> -->
+              <input type="text" name="item" id="item" class="form-control">
             </td>
             <td>
               <input type="text" name="desc" id="desc" class="form-control" maxlength=30>
             </td>
             <td>
-              <input type="text" name="qty" id="qty" class="form-control" maxlength=5>
+              <input type="text" name="qty" id="qty" class="form-control" maxlength=5 value=0.0>
             </td>
             <td>
-              <input type="text" name="rate" id="rate" class="form-control" maxlength=5>
+              <input type="text" name="rate" id="rate" class="form-control" maxlength=5 value=0.0>
             </td>
             <td>
               <select class="form-select" name="tax" id="tax">
@@ -89,10 +90,10 @@ New Estimate
               </select>
             </td>
             <td>
-              <input type="text" name="details" id="amount" class="form-control" readonly disabled>              
+              <input type="text" name="details" id="amount" class="form-control" readonly value=0.0>              
             </td>
             <td>
-              <!-- <button type="button" class="btn-close" disabled aria-label="Close"></button> -->
+              <button type="button" class="btn-close" disabled aria-label="Close"></button>
             </td>
           </tr>
           
@@ -180,55 +181,5 @@ New Estimate
 
 </div>
 
-<script>
-  function add_row() {
-    let table = document.getElementById('est_table');
-    console.log(table);
-    console.log("Estimate");
-    const newRow = table.insertRow();
-
-    const cell0 = newRow.insertCell(0);
-    const cell1 = newRow.insertCell(1);
-    const cell2 = newRow.insertCell(2);
-    const cell3 = newRow.insertCell(3);
-    const cell4 = newRow.insertCell(4);
-    const cell5 = newRow.insertCell(5);
-    const cell6 = newRow.insertCell(6);
-
-
-    cell0.innerHTML = cell0.innerHTML + `<td> <select class="form-select" name="tax" id="tax">
-                <option value=""></option>
-              </select>
-              <!-- <input type="text" name="item" id="item" class="form-control"> --> </td>`
-    cell1.innerHTML = cell1.innerHTML + `<td> <input type="text" name="desc" id="desc" class="form-control" maxlength=30> </td>`
-    cell2.innerHTML = cell2.innerHTML + `<td> <input type="text" name="qty" id="qty" class="form-control" maxlength=5> </td>`
-    cell3.innerHTML = cell3.innerHTML + `<td> <input type="text" name="rate" id="rate" class="form-control" maxlength=5> </td>`
-    cell4.innerHTML = cell4.innerHTML + `<td>
-              <select class="form-select" name="tax" id="tax">
-                <option value=""></option>
-              </select>
-            </td>`
-    cell5.innerHTML = cell5.innerHTML + `<td>
-              <input type="text" name="details" id="amount" class="form-control" readonly disabled>              
-            </td>`
-    cell6.innerHTML = cell6.innerHTML + `<td>
-              <button type="button" class="btn-close" aria-label="Close" onclick="delete_row()"></button>
-            </td>`
-
-  }
-
-  function delete_row() {
-    let index, table = document.getElementById('est_table');
-    for(let i = 0; i<table.rows.length; i++) {
-
-        table.rows[i].cells[6].onclick = function() {
-            if (table.rows.length !== 2){
-                index = this.parentElement.rowIndex;
-                table.deleteRow(index);
-            }
-        }
-    }
-  }
-</script>
 
 {% endblock %}
