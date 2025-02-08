@@ -31,25 +31,50 @@ function qty_change(){
 
 }
 
-function calculate(){
+function qty_changed(){
+    let index, table = document.getElementById('est_table');
+    for(let i = 0; i<table.rows.length; i++) {
+        table.rows[i].cells[2].onchange = function(){
+        index = this.parentElement.rowIndex;
+        qty = Number(document.getElementById('est_table').rows[index].cells[2].children[0].value);
+        rate = Number(document.getElementById('est_table').rows[index].cells[3].children[0].value);
+        document.getElementById('est_table').rows[index].cells[5].children[0].value = qty*rate;
+        }
+    }
+}
+
+function rate_changed(){
     let index, table = document.getElementById('est_table');
     for(let i = 0; i<table.rows.length; i++) {
         table.rows[i].cells[3].onchange = function(){
         index = this.parentElement.rowIndex;
-        }
         qty = Number(document.getElementById('est_table').rows[index].cells[2].children[0].value);
         rate = Number(document.getElementById('est_table').rows[index].cells[3].children[0].value);
-        document.getElementById('est_table').rows[index].cells[4].value = qty*rate;
+        document.getElementById('est_table').rows[index].cells[5].children[0].value = qty*rate;
+        }
+    }
+}
+
+function set_total() {
+    let table = document.getElementById('est_table');
+    let amount = 0.0;
+    // console.log("Table Length " + table.rows.length);
+    for(let i = 1; i<table.rows.length; i++) {
+        // console.log(table.rows[i].cells[5].children[0].value);
+
+        amount += Number(table.rows[i].cells[5].children[0].value);
+        document.getElementById('sub_total').innerText = amount;
+        // console.log("amount" + amount);
     }
 }
 
 function delete_row() {
-    let table = document.getElementById('est_table');
+    let index, table = document.getElementById('est_table');
     for(let i = 0; i<table.rows.length; i++) {
 
         table.rows[i].cells[6].onclick = function() {
             if (table.rows.length !== 2){
-                let index = this.parentElement.rowIndex;
+                index = this.parentElement.rowIndex;
                 table.deleteRow(index);
             }
         }
@@ -58,8 +83,7 @@ function delete_row() {
 
 function add_row() {
     let table = document.getElementById('est_table');
-    console.log(table);
-    console.log("Estimate");
+    
     const newRow = table.insertRow();
 
     const cell0 = newRow.insertCell(0);
@@ -76,15 +100,15 @@ function add_row() {
               </select>
               <!-- <input type="text" name="item" id="item" class="form-control"> --> </td>`
     cell1.innerHTML = cell1.innerHTML + `<td> <input type="text" name="desc" id="desc" class="form-control" maxlength=30> </td>`
-    cell2.innerHTML = cell2.innerHTML + `<td> <input type="text" name="qty" id="qty" class="form-control" maxlength=5 value=0.0> </td>`
-    cell3.innerHTML = cell3.innerHTML + `<td> <input type="text" name="rate" id="rate" class="form-control" maxlength=5 value=0.0> </td>`
+    cell2.innerHTML = cell2.innerHTML + `<td> <input type="text" name="qty" id="qty" class="form-control" maxlength=5 value=0.0 onchange="qty_changed()"> </td>`
+    cell3.innerHTML = cell3.innerHTML + `<td> <input type="text" name="rate" id="rate" class="form-control" maxlength=5 value=0.0 onchange="rate_changed()"> </td>`
     cell4.innerHTML = cell4.innerHTML + `<td>
               <select class="form-select" name="tax" id="tax">
                 <option value=""></option>
               </select>
             </td>`
     cell5.innerHTML = cell5.innerHTML + `<td>
-              <input type="text" name="details" id="amount" class="form-control" readonly  value=0.0>              
+              <input type="text" name="details" id="amount" class="form-control" readonly  value=0.0 onblur="set_total()">              
             </td>`
     cell6.innerHTML = cell6.innerHTML + `<td>
               <button type="button" class="btn-close" aria-label="Close" onclick="delete_row()"></button>

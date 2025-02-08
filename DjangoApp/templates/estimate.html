@@ -70,30 +70,32 @@ New Estimate
         <tbody>
           <tr>
             <td>
-              <!-- <select class="form-select" name="product" id="product">
+              <select class="form-select" name="product" id="product">
                 <option value=""></option>
-              </select> -->
-              <input type="text" name="item" id="item" class="form-control">
+              </select>
+              <!-- <input type="text" name="item" id="item" class="form-control"> -->
             </td>
             <td>
               <input type="text" name="desc" id="desc" class="form-control" maxlength=30>
             </td>
             <td>
-              <input type="text" name="qty" id="qty" class="form-control" maxlength=5 value=0.0>
+              <input type="text" name="qty" id="qty" class="form-control" maxlength=5 value=0.0 onchange="qty_changed()">
             </td>
             <td>
-              <input type="text" name="rate" id="rate" class="form-control" maxlength=5 value=0.0>
+              <input type="text" name="rate" id="rate" class="form-control" maxlength=5 value=0.0 onchange="rate_changed()">
             </td>
             <td>
               <select class="form-select" name="tax" id="tax">
-                <option value=""></option>
+                {% for i in context.gst.values %}
+                <option value="">{{i}}</option>
+                {% endfor %}
               </select>
             </td>
             <td>
-              <input type="text" name="details" id="amount" class="form-control" readonly value=0.0>              
+              <input type="text" name="details" id="amount" class="form-control" readonly value=0.0 onblur="set_total()">              
             </td>
             <td>
-              <button type="button" class="btn-close" disabled aria-label="Close"></button>
+              <!-- <button type="button" class="btn-close" disabled aria-label="Close"></button> -->
             </td>
           </tr>
           
@@ -113,7 +115,7 @@ New Estimate
         <div class="col-4"><label class="fw-semibold fs-5">Sub Total</label></div>
         <div class="col-2"></div>
         <div class="col-6 text-end">
-          <label class="fw-semibold fs-5" for="">0.00</label>
+          <label class="fw-semibold fs-5" id="sub_total">0.00</label>
           <!-- <input type="text" class="form-control"> -->
         </div>
       </div>
@@ -121,7 +123,7 @@ New Estimate
         <div class="col-3"> <label class="fw-normal fs-5">Discount</label> </div>
         <div class="col-4">
           <div class="input-group mb-3">
-            <input type="text" class="form-control" aria-label="Text input with dropdown button">
+            <input type="text" class="form-control" aria-label="Text input with dropdown button" id="discount">
             <span class="input-group-text"><img src="{% static 'ico/black-rupee.svg' %}" alt="" height=20></span>
            
           </div>
@@ -133,41 +135,35 @@ New Estimate
         </div>
         <div class="col-5 text-end"><label class="fw-semibold" for="">0.00</label></div>
       </div>
-      {% if tax == True %}
+      {% if context.tax == True %}
       <div class="row mt-2 mb-2">
-        <div class="col-3"><label class="fw-bold fs-6">SGST9 [9%]</label></div>
-        <div class="col-9 text-end"><label class="fw-semibold fs-6">0.00</label></div>
-        <!-- <div class="col-2 text-center"><label class="fw-semibold fs-6">|</label></div>
-        <div class="col-3"><label class="fw-bold fs-6">CGST9[9%]</label></div>
-        <div class="col-2 text-end"><label class="fw-semibold fs-6">0.00</label></div> -->
+        <div class="col-6"><label class="fw-bold fs-6" id="label_sgst">SGST9 [9%]</label></div>
+        <div class="col-6 text-end"><label class="fw-semibold fs-6" id="sgst">0.00</label></div>
       </div>
       <div class="row mt-2 mb-2">
-        <!-- <div class="col-3"><label class="fw-bold fs-6">SGST9[9%]</label></div>
-        <div class="col-2 text-end"><label class="fw-semibold fs-6">0.00</label></div>
-        <div class="col-2 text-center"><label class="fw-semibold fs-6">|</label></div> -->
-        <div class="col-3"><label class="fw-bold fs-6">CGST9 [9%]</label></div>
-        <div class="col-9 text-end"><label class="fw-semibold fs-6">0.00</label></div>
+        <div class="col-6"><label class="fw-bold fs-6" id="label_sgst">CGST9 [9%]</label></div>
+        <div class="col-6 text-end"><label class="fw-semibold fs-6" id="cgst">0.00</label></div>
       </div>
       {% else %}
       <div class="row mt-2 mb-2">
-        <div class="col-3"><label class="fw-bold fs-6">IGST18 [18%]</label></div>
-        <div class="col-9 text-end"><label class="fw-semibold fs-6">0.00</label></div>
+        <div class="col-6"><label class="fw-bold fs-6" id="label_sgst">IGST18 [18%]</label></div>
+        <div class="col-6 text-end"><label class="fw-semibold fs-6" id="igst">0.00</label></div>
       </div>
       {% endif %}
       <div class="row mt-2 mb-2">
         <div class="col-4"><label class="fw-semibold fs-6">Advance</label></div>
         <div class="col-2"></div>
-        <div class="col-6"><input type="text" class="form-control"></div>
+        <div class="col-6"><input type="text" class="form-control" id="advance"></div>
       </div>
       <div class="row mt-2 mb-2">
         <div class="col-4"><label class="fw-semibold fs-6">Rounding-off</label></div>
         <div class="col-2"></div>
-        <div class="col-6"><input type="text" class="form-control"></div>
+        <div class="col-6"><input type="text" class="form-control" id="round_off"></div>
       </div>
       <div class="row mt-2 mb-2">
         <div class="col-4"><label class="fw-semibold fs-5">Total</label></div>
         <div class="col-2"></div>
-        <div class="col-6"><input type="text" class="form-control"></div>
+        <div class="col-6"><input type="text" class="form-control" id="total"></div>
       </div>
         
     </div>
@@ -180,6 +176,11 @@ New Estimate
 
 
 </div>
+<script>
+//   function view(){
+//     console.log("cell clicked")
+// }
 
+</script>
 
 {% endblock %}

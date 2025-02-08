@@ -78,7 +78,7 @@ def logout_user(request):
 def customer(request):
 	customers = Customer.objects.order_by('name')
 	# customers = Master.objects.all().values_list('gstin')
-	
+	print(customers)
 
 	return render(request, 'customer.html', {'customers':customers})
 
@@ -123,8 +123,22 @@ def estimate(request):
 
 	choices = ['party A', 'party B', 'party C', 'party D', 'party E', 'party F', 'party G', 'party H',]
 
-	tax = True #{"istate":True, "state":False}
-	return render(request, 'estimate.html', {'tax':tax})
+	gst = {
+		'select': 'Select a Tax',
+		'gst-0': 0,
+		'gst-5': 5,
+		'gst-12': 12,
+		'gst-18': 18,
+		'gst-28': 28,
+	}
+
+	tax = False #{"istate":True, "state":False}
+
+	context = {
+		'gst':gst,
+		'tax':tax
+	}
+	return render(request, 'estimate.html', {'context':context})
 
 
 

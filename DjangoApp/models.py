@@ -2,7 +2,6 @@ from django.db import models
 
 
 class Customer(models.Model):
-    # cust_id = models.BigAutoField(primary_key=True)
     added_at = models.DateTimeField(auto_now_add=True)
     acc_type = models.CharField(max_length=10)
     name = models.CharField(max_length=100)
@@ -97,7 +96,6 @@ class Bill(models.Model):
     gtotal = models.FloatField()
 
 class Product(models.Model):
-    # prod_id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=100)
     hsn_code = models.CharField(max_length=20)
     unit = models.CharField(max_length=10)
