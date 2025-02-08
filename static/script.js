@@ -58,12 +58,16 @@ function rate_changed(){
 function set_total() {
     let table = document.getElementById('est_table');
     let amount = 0.0;
+    // let tax = document.getElementById("tax_rate").value;
+    // let tax_rate = tax.value;
+    console.log("Selected Tax is " + tax);
     // console.log("Table Length " + table.rows.length);
     for(let i = 1; i<table.rows.length; i++) {
         // console.log(table.rows[i].cells[5].children[0].value);
-
+        let tax = Number(table.rows[i].cells[4].children[0].value);
         amount += Number(table.rows[i].cells[5].children[0].value);
         document.getElementById('sub_total').innerText = amount;
+        console.log("Select Tax " + tax)
         // console.log("amount" + amount);
     }
 }
@@ -103,8 +107,10 @@ function add_row() {
     cell2.innerHTML = cell2.innerHTML + `<td> <input type="text" name="qty" id="qty" class="form-control" maxlength=5 value=0.0 onchange="qty_changed()"> </td>`
     cell3.innerHTML = cell3.innerHTML + `<td> <input type="text" name="rate" id="rate" class="form-control" maxlength=5 value=0.0 onchange="rate_changed()"> </td>`
     cell4.innerHTML = cell4.innerHTML + `<td>
-              <select class="form-select" name="tax" id="tax">
-                <option value=""></option>
+              <select class="form-select" name="tax" id="tax_rate">
+                {% for i in context.gst.values %}
+                <option value="{{i}}">{{i}}</option>
+                {% endfor %}
               </select>
             </td>`
     cell5.innerHTML = cell5.innerHTML + `<td>

@@ -85,9 +85,9 @@ New Estimate
               <input type="text" name="rate" id="rate" class="form-control" maxlength=5 value=0.0 onchange="rate_changed()">
             </td>
             <td>
-              <select class="form-select" name="tax" id="tax">
+              <select class="form-select" name="tax" id="tax_rate">
                 {% for i in context.gst.values %}
-                <option value="">{{i}}</option>
+                <option value="{{i}}">{{i}}</option>
                 {% endfor %}
               </select>
             </td>
