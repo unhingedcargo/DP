@@ -132,13 +132,13 @@ def estimate(request):
 		'gst-28': 28,
 	}
 
-	tax = False #{"istate":True, "state":False}
+	tax = True #{"istate":True, "state":False}
 
 	context = {
 		'gst':gst,
 		'tax':tax
 	}
-	return render(request, 'estimate.html', {'context':context})
+	return render(request, 'estimate.html', context)
 
 
 

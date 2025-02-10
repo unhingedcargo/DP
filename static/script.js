@@ -1,3 +1,17 @@
+function show_summary() {
+    // var x = document.getElementById("summary_tag");
+    // if (x.style.display === "none") {
+    //     x.style.display = "inline";
+    // } else {
+    //     x.style.display = "none";
+    // }
+    if (document.getElementById('summary_tag').hasAttribute("hidden")) {
+        document.getElementById('summary_tag').removeAttribute("hidden");
+    } else {
+        document.getElementById('summary_tag').setAttribute("hidden", "hidden");
+    }
+}
+
 
 function do_nothing(){
     let table = document.getElementById('est_table');
@@ -58,10 +72,6 @@ function rate_changed(){
 function set_total() {
     let table = document.getElementById('est_table');
     let amount = 0.0;
-    // let tax = document.getElementById("tax_rate").value;
-    // let tax_rate = tax.value;
-    console.log("Selected Tax is " + tax);
-    // console.log("Table Length " + table.rows.length);
     for(let i = 1; i<table.rows.length; i++) {
         // console.log(table.rows[i].cells[5].children[0].value);
         let tax = Number(table.rows[i].cells[4].children[0].value);
@@ -79,7 +89,9 @@ function delete_row() {
         table.rows[i].cells[6].onclick = function() {
             if (table.rows.length !== 2){
                 index = this.parentElement.rowIndex;
-                table.deleteRow(index);
+                if (index !== 1) {
+                    table.deleteRow(index);
+                }
             }
         }
     }
@@ -99,19 +111,14 @@ function add_row() {
     const cell6 = newRow.insertCell(6);
 
 
-    cell0.innerHTML = cell0.innerHTML + `<td> <select class="form-select" name="tax" id="tax">
-                <option value=""></option>
-              </select>
-              <!-- <input type="text" name="item" id="item" class="form-control"> --> </td>`
+    cell0.innerHTML = cell0.innerHTML + `<td> 
+              <input type="text" name="item" id="item" class="form-control">
+              </td>`
     cell1.innerHTML = cell1.innerHTML + `<td> <input type="text" name="desc" id="desc" class="form-control" maxlength=30> </td>`
     cell2.innerHTML = cell2.innerHTML + `<td> <input type="text" name="qty" id="qty" class="form-control" maxlength=5 value=0.0 onchange="qty_changed()"> </td>`
     cell3.innerHTML = cell3.innerHTML + `<td> <input type="text" name="rate" id="rate" class="form-control" maxlength=5 value=0.0 onchange="rate_changed()"> </td>`
     cell4.innerHTML = cell4.innerHTML + `<td>
-              <select class="form-select" name="tax" id="tax_rate">
-                {% for i in context.gst.values %}
-                <option value="{{i}}">{{i}}</option>
-                {% endfor %}
-              </select>
+              <input type="text" name="rate" id="rate" class="form-control" maxlength=2 value=0 onchange="tax_applied()">
             </td>`
     cell5.innerHTML = cell5.innerHTML + `<td>
               <input type="text" name="details" id="amount" class="form-control" readonly  value=0.0 onblur="set_total()">              

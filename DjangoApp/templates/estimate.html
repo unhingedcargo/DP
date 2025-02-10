@@ -6,7 +6,7 @@ New Estimate
 {% endblock %} 
 
 {% block body %}
-<div class="container">
+<div class="container" >
   <h1>New Estimate</h1>
 </div>
 <div class="container card">
@@ -43,6 +43,9 @@ New Estimate
     <div class="input-group mb-3">
       <span class="input-group-text fw-semibold">Customer Name</span>
       <input type="text" class="form-control" maxlength=20 autofocus>
+
+      <a class="bg-primary" href="#"><span><img class="ps-2 pe-2 pt-2" src="{% static 'ico/search.png' %}" alt="" height=30></span></a>
+      
       <span class="input-group-text fw-semibold">Contact No.</span>
       <input type="text" class="form-control" maxlength=10>
     </div>
@@ -58,11 +61,11 @@ New Estimate
             <!-- <th scope="col">#</th> -->
           
               <th scope="col" class="col-2 text-start">Item</th>
-              <th scope="col" class="col-2">Item Description</th>
+              <th scope="col" class="col-3">Item Description</th>
               <th scope="col" class="col-1">Quantity</th>
               <th scope="col" class="col-1">Rate</th>
-              <th scope="col" class="col-2">Tax</th>
-              <th scope="col" class="col-2">Amount</th>
+              <th scope="col" class="col-1">Tax</th>
+              <th scope="col" class="col-1">Amount</th>
               <th scope="col" class="col-1">Action</th>
           </tr>
         </thead>
@@ -70,10 +73,10 @@ New Estimate
         <tbody>
           <tr>
             <td>
-              <select class="form-select" name="product" id="product">
+              <!-- <select class="form-select" name="product" id="product">
                 <option value=""></option>
-              </select>
-              <!-- <input type="text" name="item" id="item" class="form-control"> -->
+              </select> -->
+              <input type="text" name="item" id="item" class="form-control">
             </td>
             <td>
               <input type="text" name="desc" id="desc" class="form-control" maxlength=30>
@@ -85,11 +88,12 @@ New Estimate
               <input type="text" name="rate" id="rate" class="form-control" maxlength=5 value=0.0 onchange="rate_changed()">
             </td>
             <td>
-              <select class="form-select" name="tax" id="tax_rate">
-                {% for i in context.gst.values %}
-                <option value="{{i}}">{{i}}</option>
+              <input type="text" name="rate" id="rate" class="form-control" maxlength=2 value=0 onchange="tax_applied()">
+              <!-- <select class="form-select" name="tax" id="tax_rate">
+                {% for i in gst.values %}
+                <option value="">{{i}}</option>
                 {% endfor %}
-              </select>
+              </select> -->
             </td>
             <td>
               <input type="text" name="details" id="amount" class="form-control" readonly value=0.0 onblur="set_total()">              
@@ -110,6 +114,12 @@ New Estimate
     <div class="col-5">
       <input type="button" class="btn btn-outline-primary" value="Add Row" onclick="add_row()">
     </div>
+    <div class="col-5 text-end">
+      <input type="button" class="btn btn-outline-primary" value="Show Summary" onclick="show_summary()">
+    </div>
+  </div>
+  <div hidden class="row mb-4" id="summary_tag">
+    <div class="col-6"></div>
     <div class="col-5 card bg-primary bg-opacity-10">
       <div class="row mt-2 mb-2">
         <div class="col-4"><label class="fw-semibold fs-5">Sub Total</label></div>
@@ -133,9 +143,9 @@ New Estimate
           </select> -->
           <!-- <input type="text" class="form-control"> -->
         </div>
-        <div class="col-5 text-end"><label class="fw-semibold" for="">0.00</label></div>
+        <div class="col-5 text-end"><label class="fw-semibold" for=""></label></div>
       </div>
-      {% if context.tax == True %}
+      {% if tax == True %}
       <div class="row mt-2 mb-2">
         <div class="col-6"><label class="fw-bold fs-6" id="label_sgst">SGST9 [9%]</label></div>
         <div class="col-6 text-end"><label class="fw-semibold fs-6" id="sgst">0.00</label></div>
@@ -169,18 +179,15 @@ New Estimate
     </div>
     <div class="col-1"></div>
   </div>
-
-
+  <div class="text-end me-5">
+    <div class="text-end me-5">
+    <input type="submit" value="Submit" class="btn btn-outline-primary">
+  </div>
+</div>
 
   </form>
 
 
 </div>
-<script>
-//   function view(){
-//     console.log("cell clicked")
-// }
-
-</script>
 
 {% endblock %}
