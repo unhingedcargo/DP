@@ -10,6 +10,7 @@ function show_summary() {
     } else {
         document.getElementById('summary_tag').setAttribute("hidden", "hidden");
     }
+    set_total()
 }
 
 
@@ -34,25 +35,14 @@ function show_balance(){
     document.getElementById('balance').value = amount - advance;
 }
 
-function select_product(){
-    // console.log(document.getElementById('product').value)
-}
-
-function qty_change(){
-    qty = Number(document.getElementById('qty').value);
-    rate = Number (document.getElementById('rate').value);
-    document.getElementById('total').value = qty*rate;
-
-}
-
 function qty_changed(){
     let index, table = document.getElementById('est_table');
     for(let i = 0; i<table.rows.length; i++) {
         table.rows[i].cells[2].onchange = function(){
         index = this.parentElement.rowIndex;
-        qty = Number(document.getElementById('est_table').rows[index].cells[2].children[0].value);
-        rate = Number(document.getElementById('est_table').rows[index].cells[3].children[0].value);
-        document.getElementById('est_table').rows[index].cells[5].children[0].value = qty*rate;
+        qty = Number(table.rows[index].cells[2].children[0].value);
+        rate = Number(table.rows[index].cells[3].children[0].value);
+        document.getElementById('est_table').rows[index].cells[5].children[0].value = Number(qty*rate).toFixed(2);
         }
     }
 }
@@ -62,9 +52,9 @@ function rate_changed(){
     for(let i = 0; i<table.rows.length; i++) {
         table.rows[i].cells[3].onchange = function(){
         index = this.parentElement.rowIndex;
-        qty = Number(document.getElementById('est_table').rows[index].cells[2].children[0].value);
-        rate = Number(document.getElementById('est_table').rows[index].cells[3].children[0].value);
-        document.getElementById('est_table').rows[index].cells[5].children[0].value = qty*rate;
+        qty = Number(table.rows[index].cells[2].children[0].value);
+        rate = Number(table.rows[index].cells[3].children[0].value);
+        document.getElementById('est_table').rows[index].cells[5].children[0].value = Number(qty*rate).toFixed(2);
         }
     }
 }
@@ -72,15 +62,50 @@ function rate_changed(){
 function set_total() {
     let table = document.getElementById('est_table');
     let amount = 0.0;
+    let taxable_amount = 0.0;
     for(let i = 1; i<table.rows.length; i++) {
-        // console.log(table.rows[i].cells[5].children[0].value);
-        let tax = Number(table.rows[i].cells[4].children[0].value);
+        qty = Number(table.rows[i].cells[2].children[0].value);
+        rate = Number(table.rows[i].cells[3].children[0].value);
+        
         amount += Number(table.rows[i].cells[5].children[0].value);
-        document.getElementById('sub_total').innerText = amount;
-        console.log("Select Tax " + tax)
-        // console.log("amount" + amount);
+        taxable_amount += qty*rate;
+        document.getElementById('sub_total').innerText = taxable_amount;
+    }
+    if(document.getElementById('sgst')) {
+        document.getElementById('sgst').innerText = Number((amount - taxable_amount)/2).toFixed(2);
+    }
+    if(document.getElementById('cgst')) {
+        document.getElementById('cgst').innerText = Number((amount - taxable_amount)/2).toFixed(2);
+    }
+    if(document.getElementById('igst')) {
+        document.getElementById('igst').innerText = Number((amount - taxable_amount)).toFixed(2);
+    }
+    
+    document.getElementById('total').value = Math.round(amount);
+}
+
+function tax_applied() {
+    let index, table = document.getElementById('est_table');
+    for(let i = 0; i<table.rows.length; i++) {
+        table.rows[i].cells[4].onchange = function(){
+        index = this.parentElement.rowIndex;
+        qty = Number(table.rows[index].cells[2].children[0].value);
+        rate = Number(table.rows[index].cells[3].children[0].value);
+        tax_rate = Number(table.rows[index].cells[4].children[0].value);
+        tax = 1 + (tax_rate/100);
+        document.getElementById('est_table').rows[index].cells[5].children[0].value = Number(qty*rate*tax).toFixed(2);
+        }
     }
 }
+
+function put_discount() {
+    let amount = document.getElementById('total').value;
+    let disc = document.getElementById('discount').value;
+    document.getElementById('disc_value').innerText = ("-" + disc);
+    document.getElementById('total').value = amount - disc;
+
+}
+
 
 function delete_row() {
     let index, table = document.getElementById('est_table');
