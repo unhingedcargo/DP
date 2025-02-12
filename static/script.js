@@ -81,7 +81,8 @@ function set_total() {
         document.getElementById('igst').innerText = Number((amount - taxable_amount)).toFixed(2);
     }
     
-    document.getElementById('total').value = Math.round(amount);
+    document.getElementById('total').innerText = Math.round(amount);
+    document.getElementById('total_text').value = Math.round(amount);
 }
 
 function tax_applied() {
@@ -99,13 +100,22 @@ function tax_applied() {
 }
 
 function put_discount() {
-    let amount = document.getElementById('total').value;
-    let disc = document.getElementById('discount').value;
+    set_total()
+    let amount = Number(document.getElementById('total').innerText);
+    let disc = Number(document.getElementById('discount').value);
+    document.getElementById('total').innerText = (amount - disc);
+    document.getElementById('total_text').value = (amount-disc);
     document.getElementById('disc_value').innerText = ("-" + disc);
-    document.getElementById('total').value = amount - disc;
+    
 
 }
 
+function advance_added() {
+    let amount = Number(document.getElementById('total').innerText);
+    let advance = Number(document.getElementById('advance').value)
+    document.getElementById('balance').innerText = (amount - advance);
+    document.getElementById('balance_text').value = (amount - advance);
+}
 
 function delete_row() {
     let index, table = document.getElementById('est_table');
@@ -143,10 +153,10 @@ function add_row() {
     cell2.innerHTML = cell2.innerHTML + `<td> <input type="text" name="qty" id="qty" class="form-control" maxlength=5 value=0.0 onchange="qty_changed()"> </td>`
     cell3.innerHTML = cell3.innerHTML + `<td> <input type="text" name="rate" id="rate" class="form-control" maxlength=5 value=0.0 onchange="rate_changed()"> </td>`
     cell4.innerHTML = cell4.innerHTML + `<td>
-              <input type="text" name="rate" id="rate" class="form-control" maxlength=2 value=0 onchange="tax_applied()">
+              <input type="text" name="tax" id="tax" class="form-control" maxlength=2 value=0 onchange="tax_applied()">
             </td>`
     cell5.innerHTML = cell5.innerHTML + `<td>
-              <input type="text" name="details" id="amount" class="form-control" readonly  value=0.0 onblur="set_total()">              
+              <input type="text" name="amount" id="amount" class="form-control" readonly  value=0.0 onblur="set_total()">              
             </td>`
     cell6.innerHTML = cell6.innerHTML + `<td>
               <button type="button" class="btn-close" aria-label="Close" onclick="delete_row()"></button>

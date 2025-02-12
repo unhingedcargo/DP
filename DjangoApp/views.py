@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import *
 from .models import *
+from datetime import date
 
 
 
@@ -121,7 +122,13 @@ def delete_customer(request, cust):
 
 def estimate(request):
 
-	choices = ['party A', 'party B', 'party C', 'party D', 'party E', 'party F', 'party G', 'party H',]
+	if request.method == 'POST':
+		data = request.POST
+		print(data)
+
+	else:
+		pass
+
 
 	gst = {
 		'select': 'Select a Tax',
@@ -131,12 +138,13 @@ def estimate(request):
 		'gst-18': 18,
 		'gst-28': 28,
 	}
-
+	today = date.today().strftime("%d-%b-%Y")
 	tax = True #{"istate":True, "state":False}
 
 	context = {
 		'gst':gst,
-		'tax':tax
+		'tax':tax,
+		'today':today
 	}
 	return render(request, 'estimate.html', context)
 

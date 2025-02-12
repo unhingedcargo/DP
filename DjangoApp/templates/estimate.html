@@ -11,7 +11,7 @@ New Estimate
 </div>
 <div class="container card">
 
-  <form action="" method="post">
+  <form action="" method="POST">
     {% csrf_token %}
     
     <div class="row">
@@ -19,7 +19,7 @@ New Estimate
       <div class="col">
         <div class="input-group mb-3 mt-3 text-end">
           <span class="input-group-text fw-semibold" id="basic-addon1">Estimate Number</span>
-          <input type="text" class="form-control fw-bold fs-5 text-danger text-end" maxlength=5>
+          <input type="text" name="jobno" class="form-control fw-bold fs-5 text-danger text-end" maxlength=5>
           
         </div>
       </div>
@@ -30,7 +30,7 @@ New Estimate
       <div class="col">
         <div class="input-group mb-3 text-end fw-semibold">
           <span class="input-group-text fw-semibold" id="basic-addon1">Estimate Date</span>
-          <input type="text" class="form-control fw-semibold fs-6 text-dark text-end" maxlength=11>
+          <input type="text" name="job_date" class="form-control fw-semibold fs-6 text-dark text-end" maxlength=11 value="{{ today }}">
           <!-- <a class="" href="">
             <span class="input-group-text bg-secondary">
               <img src="{% static 'ico/calendar.png' %}" alt="" height=28>
@@ -42,12 +42,12 @@ New Estimate
     
     <div class="input-group mb-3">
       <span class="input-group-text fw-semibold">Customer Name</span>
-      <input type="text" class="form-control" maxlength=20 autofocus>
+      <input type="text" name="customer_name" class="form-control" maxlength=20 autofocus>
 
       <a class="bg-primary" href="#"><span><img class="ps-2 pe-2 pt-2" src="{% static 'ico/search.png' %}" alt="" height=30></span></a>
       
       <span class="input-group-text fw-semibold">Contact No.</span>
-      <input type="text" class="form-control" maxlength=10>
+      <input type="text" name="customer_contact" class="form-control" maxlength=10>
     </div>
 
     <div class="row">
@@ -88,7 +88,7 @@ New Estimate
               <input type="text" name="rate" id="rate" class="form-control" maxlength=5 value=0.0 onchange="rate_changed()">
             </td>
             <td>
-              <input type="text" name="rate" id="rate" class="form-control" maxlength=2 value=0 onchange="tax_applied()">
+              <input type="text" name="tax" id="tax" class="form-control" maxlength=2 value=0 onchange="tax_applied()">
               <!-- <select class="form-select" name="tax" id="tax_rate">
                 {% for i in gst.values %}
                 <option value="">{{i}}</option>
@@ -96,7 +96,7 @@ New Estimate
               </select> -->
             </td>
             <td>
-              <input type="text" name="details" id="amount" class="form-control" readonly value=0.0 onblur="set_total()">              
+              <input type="text" name="amount" id="amount" class="form-control" readonly value=0.0 onblur="set_total()">              
             </td>
             <td>
               <!-- <button type="button" class="btn-close" disabled aria-label="Close"></button> -->
@@ -119,10 +119,7 @@ New Estimate
     </div>
   </div>
   <div hidden class="row mb-4" id="summary_tag">
-    <div class="col-6">
-      <div class="row mt-2 mb-2">
-      </div>
-    </div>
+    <div class="col-6"></div>
     <div class="col-5 card bg-primary bg-opacity-10">
       <div class="row mt-2 mb-2">
         <div class="col-4"><label class="fw-semibold fs-5">Sub Total</label></div>
@@ -164,27 +161,35 @@ New Estimate
       </div>
       {% endif %}
       <div class="row mt-2 mb-2">
-        <div class="col-4"><label class="fw-semibold fs-6">Advance</label></div>
+        <div class="col-4"><label class="fw-semibold fs-5">Total</label></div>
         <div class="col-2"></div>
-        <div class="col-6"><input type="text" class="form-control" id="advance" maxlength=7></div>
+        <div class="col-6 text-end"><label class="fw-semibold fs-6" id="total">0.00</label></div>
+        <input hidden type="text" id="total_text" name="total_text">
+      </div>
+
+      <div class="row mt-2 mb-2">
+        <div class="col-4"><label class="fw-semibold fs-5">Advance</label></div>
+        <div class="col-4"></div>
+        <div class="col-4 text-end"><input type="text" class="form-control text-end" value=0.0 id="advance" name="advance" maxlength=7 onchange="advance_added()"></div>
       </div>
       <!-- <div class="row mt-2 mb-2">
         <div class="col-4"><label class="fw-semibold fs-6">Rounding-off</label></div>
         <div class="col-2"></div>
         <div class="col-6"><input type="text" class="form-control" id="round_off" maxlength=5></div>
       </div> -->
-      <div class="row mt-2 mb-2">
-        <div class="col-4"><label class="fw-semibold fs-5">Total</label></div>
+      
+      <div class="row mt-2 mb-3">
+        <div class="col-4"><label class="fw-semibold fs-5">Balance</label></div>
         <div class="col-2"></div>
-        <div class="col-6"><input type="text" class="form-control text-end fs-5 fw-bold text-primary" id="total" value="0" readonly></div>
+        <div class="col-6 text-end"><label class="fw-semibold fs-6" id="balance">0.00</label></div>
+        <input hidden type="text" id="balance_text" name="balance_text">
       </div>
-        
     </div>
     <div class="col-1"></div>
   </div>
-  <div class="text-end me-5">
-    <div class="text-end me-5">
-    <input type="submit" value="Submit" class="btn btn-outline-primary">
+  <div class="ms-5 mb-4">
+    <div class="ms-5">
+    <input type="submit" value="Submit" class="btn btn-primary">
   </div>
 </div>
 
