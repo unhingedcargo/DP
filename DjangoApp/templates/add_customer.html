@@ -9,15 +9,19 @@
 <div class='container'>
 	<h2>New Customer</h2>
 
-	<div class="row mt-5">
-		<form class="form-control" method="POST" action="">
-			{% csrf_token %}
-			
-			{{ form.as_p }}
+	<div class="row mt-3">
+		<div class="col-1"></div>
+		<div class="col-7">
+			<form class="form-control" method="POST" action="">
+				{% csrf_token %}
 
-			<button type="submit" class="btn btn-primary">Add Customer</button>
-        	<a class="btn btn-secondary" href="{% url 'customer' %}">Back</a>
-		</form>
+				{{ form.as_p }}
+
+				<button type="submit" class="btn btn-primary">Add Customer</button>
+						<a class="btn btn-secondary" href="{% url 'customer' %}">Back</a>
+			</form>
+		</div>
+		
 	</div>
 
 </div>    

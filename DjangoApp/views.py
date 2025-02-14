@@ -79,8 +79,6 @@ def logout_user(request):
 def customer(request):
 	customers = Customer.objects.order_by('name')
 	# customers = Master.objects.all().values_list('gstin')
-	print(customers)
-
 	return render(request, 'customer.html', {'customers':customers})
 
 def customer_detail(request, cust):
@@ -121,10 +119,15 @@ def delete_customer(request, cust):
 
 
 def estimate(request):
+ 	
+# <QueryDict: {'csrfmiddlewaretoken': ['WYLzljOPDD5jgxvFR51im7uKLUkbGdxnnCjg8SJXsz7nWgAKAI7QCv7wWPitJERv'], 'jobno': ['121'], 'job_date': ['14-Feb-2025'], 'customer_name': ['PRINT PLUS'], 'customer_contact': ['9945071790'], 'item': ['Trodat Seal', '300gsm', 'Star Flex'], 'desc': ['2.0', 'A4_SS', '3x2 Feet'], 'qty': ['1', '50', '2'], 'rate': ['400', '15', '350'], 'tax': ['0', '18', '0'], 'amount': ['400.00', '885.00', '700.00'], 'total_text': ['1985'], 'advance': ['1000'], 'balance_text': ['985']}>
 
 	if request.method == 'POST':
 		data = request.POST
-		print(data)
+		context = {
+			'data':data
+		}
+		return render(request, 'estimate_pdf.html', context)
 
 	else:
 		pass

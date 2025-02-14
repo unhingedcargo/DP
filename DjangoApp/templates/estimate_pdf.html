@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Estimate
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+	<div id="jobprint" class="container card a4_page">
+		<div class="text-center">
+			<!-- <embed src="{% static '2799.pdf' %}" type="" width=900 height=600>		 -->
+		</div>	
+
+		<input type="button" value="Print" class="btn btn-primary" onclick="window.print()">
+
+			<table class="table" id="table_header" style="width: 100%;">
+			<tbody>
+				<tr class="row border border-secondary border-2">
+					<td class="col-3 ms-5">
+						<img class="" src="{% static 'img/PP Logo.png' %}" alt="Company Logo" height=30rem>
+					</td>
+					<td class="col-4">
+						<div id="company_name"><label class="fs-2">COMPANY NAME</label></div>
+						<div id="company_address"><label class="fs-6">Company Address</label></div>
+						<div id="company_contact"><label class="fs-6">Contact No</label></div>
+						<div id="company_email"><label class="fs-6">Email</label></div>
+						<div class="align-text-bottom" id="company_gstin"><label class="fs-5">GSTIN</label></div>
+					</td>
+					<td class="col text-end me-5">
+						<div id="doc_type"><label class="fs-1">ESTIMATE</label></div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<table class="table" id="table_details">
+			<thead>
+				<tr>
+					<th scope="col" style="width: 50%;"></th>
+					<th scope="col" style="width: 50%;"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+
+				</tr>
+				
+			</tbody>
+			
+		</table>
+
+
+
+		<div class="row border-secondary ms-5 me-5 mt-5">
+			{{data}}
+
+			<div class="col-3" id="logo">
+				<img class="border-secondary" src="{% static 'img/PP Logo.png' %}" alt="Company Logo" height=196>
+			</div>
+			<div class="col-4">
+				<div id="company_name"><label class="fs-2">COMPANY NAME</label></div>
+				<div id="company_address"><label class="fs-6">Company Address</label></div>
+				<div id="company_contact"><label class="fs-6">Contact No</label></div>
+				<div id="company_email"><label class="fs-6">Email</label></div>
+				<div class="align-text-bottom" id="company_gstin"><label class="fs-5">GSTIN</label></div>
+
+			</div>
+			<div class="col-5">
+				<div id="doc_type" class="position-absolute bottom-0 end-0 me-5"><label class="fs-1">ESTIMATE</label></div>
+			</div>
+		</div>
+		<hr>
+	</div>
+</div>
+
+{% endblock %}

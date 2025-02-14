@@ -47,27 +47,29 @@ class CustomerInsert(forms.ModelForm):
         model = Customer
         fields = "__all__"
 
+    company_name = forms.CharField(label="Company Name ", max_length=100, required=True, widget=forms.TextInput(attrs={'class':'form-control form-control-md mt-3 mb-3', 'placeholder':'Company Name'}))
 
+    name = forms.CharField(label="Name ", max_length=100, required=False, widget=forms.TextInput(attrs={'class':'form-control form-control-md mt-3 mb-3', 'placeholder':'Customer Name'}))
+    
+    display_name = forms.CharField(label="Display Name ", max_length=100, required=True, widget=forms.TextInput(attrs={'class':'form-control form-control-md mt-3 mb-3', 'placeholder':'Display Name'}))
 
-    name = forms.CharField(label="Name ", max_length=100, required=True, widget=forms.TextInput(attrs={'class':'form-control form-control-lg mt-3 mb-3', 'placeholder':'Customer Name'}))
+    acc_type = forms.ChoiceField(choices=(('Account Type','Select Account Type...'),('Sales','Sales acc'),('Purchase', 'Purchase acc')), required=True, label="", widget=forms.Select(attrs={'class':'form-control mt-2 form-control-md', 'placeholder':'Account Type'}))
     
-    acc_type = forms.ChoiceField(choices=(('Account Type','Select Account Type...'),('Sales','Sales acc'),('Purchase', 'Purchase acc')),required=True, label="", widget=forms.Select(attrs={'class':'form-control mt-2 form-control-lg', 'placeholder':'Account Type'}))
+    contact = forms.CharField(label="Contact No. ", max_length=10, required=False, widget=forms.TextInput(attrs={'class':'form-control form-control-md mt-3 mb-3', 'placeholder':'Contact Number'}))
     
-    contact = forms.CharField(label="Contact No. ", max_length=10, required=False, widget=forms.TextInput(attrs={'class':'form-control form-control-lg mt-3 mb-3', 'placeholder':'Contact Number'}))
+    alt_contact = forms.CharField(label="Alternate Contact No. ", max_length=10, required=False, widget=forms.TextInput(attrs={'class':'form-control form-control-md mt-3 mb-3', 'placeholder':'Alternate Number'}))
     
-    alt_contact = forms.CharField(label="Alternate Contact No. ", max_length=10, required=False, widget=forms.TextInput(attrs={'class':'form-control form-control-lg mt-3 mb-3', 'placeholder':'Alternate Number'}))
+    email = forms.EmailField(label="Email Address", max_length=100, required=False,widget=forms.EmailInput(attrs={'class':'form-control form-control-md mt-3 mb-3', 'placeholder':'Email ID'}))
     
-    email = forms.EmailField(label="Email Address", max_length=100, required=False,widget=forms.EmailInput(attrs={'class':'form-control form-control-lg mt-3 mb-3', 'placeholder':'Email ID'}))
+    gstin = forms.CharField(label="GST Number ", max_length=15, required=False, widget=forms.TextInput(attrs={'class':'form-control form-control-md mt-3 mb-3', 'placeholder':'GST Number'}))
     
-    gstin = forms.CharField(label="GST Number ", max_length=15, required=False, widget=forms.TextInput(attrs={'class':'form-control form-control-lg mt-3 mb-3', 'placeholder':'GST Number'}))
+    taxable = forms.BooleanField(initial=True, required=False, label="Taxable (tick if applicable)", widget=forms.CheckboxInput(attrs={'class':''}))
     
-    state_tax = forms.BooleanField(initial=True, required=False, label="State Tax (tick if applicable)", widget=forms.CheckboxInput(attrs={'class':''}))
+    # igst = forms.BooleanField(initial=False, label="IGST Tax (tick if applicable)")
     
-    igst = forms.BooleanField(initial=False, label="IGST Tax (tick if applicable)")
+    opening_balance = forms.FloatField(label="Opening Balance", required=True, initial="0.0", widget=forms.TextInput(attrs={'class':'form-control form-control-md mt-3 mb-3', 'placeholder':'Opening Balance'}))
     
-    opening_balance = forms.FloatField(label="Opening Balance", required=True, initial="0.0", widget=forms.TextInput(attrs={'class':'form-control form-control-lg mt-3 mb-3', 'placeholder':'Opening Balance'}))
-    
-    closing_balance = forms.FloatField(label="Closing Balance", required=True, initial="0.0", widget=forms.TextInput(attrs={'class':'form-control form-control-lg mt-3 mb-3', 'placeholder':'Closing Balance'}))
+    closing_balance = forms.FloatField(label="Closing Balance", required=True, initial="0.0", widget=forms.TextInput(attrs={'class':'form-control form-control-md mt-3 mb-3', 'placeholder':'Closing Balance'}))
 
     def __init__(self, *args, **kwargs):
         super(CustomerInsert, self).__init__(*args, **kwargs)

@@ -4,15 +4,19 @@ from django.db import models
 class Customer(models.Model):
     added_at = models.DateTimeField(auto_now_add=True)
     acc_type = models.CharField(max_length=10)
+    company_name = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
+    display_name = models.CharField(max_length=100)
     contact = models.CharField(max_length=10)
     alt_contact = models.CharField(max_length=10)
     email = models.EmailField(max_length=100)
     gstin = models.CharField(max_length=20)
-    state_tax = models.BooleanField(default=True)
-    igst = models.BooleanField(default=True)
+    taxable = models.BooleanField(default=True)
     opening_balance = models.FloatField()
     closing_balance = models.FloatField()
+
+    def __str__(self):
+        return (f"{self.name} - {self.contact}")
 
 class Sundry_debtors(models.Model):
     added_at = models.DateTimeField(auto_now_add=True)
@@ -26,8 +30,10 @@ class Sundry_debtors(models.Model):
 class Receipt(models.Model):
     added_at = models.DateTimeField(auto_now_add=True)
     jobno = models.IntegerField()
+    acc_type = models.CharField(max_length=10)
     cust_id = models.BigIntegerField()
     amount_received = models.FloatField()
+    balance = models.FloatField()
     receipt_date = models.DateField(auto_now=True)
     receipt_no = models.BigIntegerField()
     payment_mode = models.CharField(max_length=20)
@@ -35,9 +41,11 @@ class Receipt(models.Model):
 class Jobcard(models.Model):
     jobno = models.IntegerField()
     date = models.DateField(auto_now=True)
+    acc_type = models.CharField(max_length=10)
     order_id = models.BigIntegerField()
     cust_id = models.BigIntegerField()
     taxable_total = models.FloatField()
+    tax_amount = models.FloatField()
     discount = models.FloatField()
     gtotal = models.FloatField()
 
@@ -45,7 +53,8 @@ class Order(models.Model):
     ref_no = models.IntegerField()
     acc_type = models.CharField(max_length=10)
     item_no = models.SmallIntegerField()
-    prod_id = models.BigIntegerField()
+    product = models.CharField(max_length=20)
+    description = models.CharField(max_length=50)
     qty = models.FloatField()
     unit = models.CharField(max_length=10)
     rate = models.FloatField()
@@ -58,13 +67,14 @@ class Vendor(models.Model):
     # vend_id = models.BigAutoField(primary_key=True)
     added_at = models.DateTimeField(auto_now_add=True)
     acc_type = models.CharField(max_length=10)
+    company_name = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
+    display_name = models.CharField(max_length=100)
     contact = models.CharField(max_length=10)
     alt_contact = models.CharField(max_length=10)
     email = models.EmailField(max_length=100)
     gstin = models.CharField(max_length=20)
-    state_tax = models.BooleanField(default=True)
-    igst = models.BooleanField(default=True)
+    taxable = models.BooleanField(default=True)
     opening_balance = models.FloatField()
     closing_balance = models.FloatField()
 
@@ -80,8 +90,10 @@ class Sundry_creditors(models.Model):
 class Payment(models.Model):
     added_at = models.DateTimeField(auto_now_add=True)
     billno = models.IntegerField()
+    acc_type = models.CharField(max_length=10)
     vend_id = models.BigIntegerField()
     amount_paid = models.FloatField()
+    balance = models.FloatField()
     payment_date = models.DateField(auto_now=True)
     payment_no = models.BigIntegerField()
     payment_mode = models.CharField(max_length=20)    
@@ -89,9 +101,11 @@ class Payment(models.Model):
 class Bill(models.Model):
     billno = models.IntegerField()
     date = models.DateField()
+    acc_type = models.CharField(max_length=10)
     order_id = models.BigIntegerField()
     vend_id = models.BigIntegerField()
     taxable_total = models.FloatField()
+    tax_amount = models.FloatField()
     discount = models.FloatField()
     gtotal = models.FloatField()
 
@@ -126,11 +140,12 @@ class Ledger(models.Model):
 class Cashflow(models.Model):
     ref_no = models.CharField(max_length=10)
     date = models.DateField(auto_now=True)
-    ledger_id = models.BigIntegerField()
+    account = models.CharField(max_length=100)
+    ledger = models.CharField(max_length=100)
     details = models.CharField(max_length=200)
-    cashflow = models.BooleanField()    # True - Cash-IN and False - Cash-OUT
-    amount_in = models.FloatField()
-    amount_out = models.FloatField()
+    cashflow = models.CharField(max_length=20)    # Dr or Cr
+    cash_in = models.FloatField()
+    cash_out = models.FloatField()
 
 class Gst(models.Model):
     slab = models.CharField(max_length=10)
