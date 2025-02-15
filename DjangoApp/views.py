@@ -4,9 +4,13 @@ from django.contrib import messages
 from .forms import *
 from .models import *
 from datetime import date
+import json, os
+from pathlib import Path
 
+BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+with open(os.path.join(BASE_DIR,"static/json/company-master.json"), 'r') as f:
+	company_details = json.load(f)
 
 def home(request):
 	if request.method == 'POST':
@@ -25,6 +29,24 @@ def home(request):
 	else:
 		return render(request, 'index.html', {})
 
+
+# REGISTER COMPANY DETAILS
+def register_company(request):
+	if request.method == 'POST':
+		form = CompanyRegister(request.POST)
+		if form.is_valid():
+			context = form.cleaned_data
+			file_name = os.path.join(BASE_DIR,'static/json/company-master.json')
+			with open(file_name, 'w') as f:
+				json.dump(form.cleaned_data, f)
+			
+			messages.success(request, "Company Registered Successfully")
+			return redirect('register')
+	else:
+		form = CompanyRegister()		
+		context = {'form':form}
+		return render(request, 'register.html', context)
+	return render(request, 'register.html', context)
 
 
 # PRODUCT PAGE VIEWS
@@ -123,9 +145,30 @@ def estimate(request):
 # <QueryDict: {'csrfmiddlewaretoken': ['WYLzljOPDD5jgxvFR51im7uKLUkbGdxnnCjg8SJXsz7nWgAKAI7QCv7wWPitJERv'], 'jobno': ['121'], 'job_date': ['14-Feb-2025'], 'customer_name': ['PRINT PLUS'], 'customer_contact': ['9945071790'], 'item': ['Trodat Seal', '300gsm', 'Star Flex'], 'desc': ['2.0', 'A4_SS', '3x2 Feet'], 'qty': ['1', '50', '2'], 'rate': ['400', '15', '350'], 'tax': ['0', '18', '0'], 'amount': ['400.00', '885.00', '700.00'], 'total_text': ['1985'], 'advance': ['1000'], 'balance_text': ['985']}>
 
 	if request.method == 'POST':
-		data = request.POST
+		data = dict(request.POST)
+		item = data['item']
+		desc = data['desc']
+		qty = data['qty']
+		rate = data['rate']
+		tax = data['tax']
+		amount = data['amount']
+		order = []
+		for i in range(len(amount)):
+			order.append([item[i], desc[i],qty[i],rate[i],tax[i],amount[i]])
+		
+
 		context = {
-			'data':data
+			'data': data,
+			'company_details' : company_details,
+			'customer': data['customer_name'][0],
+			'contact': data['customer_contact'][0],
+			'jobno' : data['jobno'][0],
+			'job_date' : data['job_date'][0],
+			'subtotal' : data['subtotal_text'][0],
+			'total' : data['total_text'][0],
+			'advance': data['advance'][0],
+			'balance' : data['balance_text'][0],
+			'order' : order
 		}
 		return render(request, 'estimate_pdf.html', context)
 
@@ -142,7 +185,7 @@ def estimate(request):
 		'gst-28': 28,
 	}
 	today = date.today().strftime("%d-%b-%Y")
-	tax = True #{"istate":True, "state":False}
+	tax = False #{"istate":True, "state":False}
 
 	context = {
 		'gst':gst,

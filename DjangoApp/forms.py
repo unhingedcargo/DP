@@ -4,6 +4,28 @@ from django import forms
 from .models import *
 import csv
 
+class CompanyRegister(forms.Form):
+    company_name = forms.CharField(label="Company Name", max_length=100, required=True, widget=forms.TextInput(attrs={'class':'form-control'}))
+    name = forms.CharField(label="Owner Name", max_length=100, required=True, widget=forms.TextInput(attrs={'class':'form-control'}))
+    display_name = forms.CharField(label="Display Name", max_length=100, required=True, widget=forms.TextInput(attrs={'class':'form-control'}))
+    contact = forms.CharField(label="Contact No. ", max_length=10, required=False, widget=forms.TextInput(attrs={'class':'form-control form-control-md mt-3 mb-3', 'placeholder':'Contact Number'}))
+    email = forms.EmailField(label="Email Address", max_length=100, required=False,widget=forms.EmailInput(attrs={'class':'form-control form-control-md mt-3 mb-3', 'placeholder':'Email ID'}))
+    gstin = forms.CharField(label="GST Number ", max_length=15, required=False, widget=forms.TextInput(attrs={'class':'form-control form-control-md mt-3 mb-3', 'placeholder':'GST Number'}))
+    address = forms.CharField(label="Address", max_length=100, required=True, widget=forms.Textarea(attrs={'class':'form-control'}))
+    city = forms.CharField(label="City", max_length=100, required=True, widget=forms.TextInput(attrs={'class':'form-control'}))
+    state = forms.CharField(label="State", max_length=100, required=True, widget=forms.TextInput(attrs={'class':'form-control'}))
+    # reg_date = forms.CharField(label="Company Name", max_length=100, required=True, widget=forms.TextInput(attrs={'class':'form-control'}))
+
+    class Meta:
+        fiels = "__all__"
+
+class CompanyUserRegister(forms.Form):
+    username = forms.CharField(label="User name", max_length=20, required=True, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':''}))
+    password = forms.CharField(label="Password", max_length=20, required=True, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':''}))
+
+    class Meta:
+        fields = "__all__"
+
 class SignUpForm(UserCreationForm):
     name = forms.CharField(label="", max_length=20, required=True, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Enter Your Name'}))
 

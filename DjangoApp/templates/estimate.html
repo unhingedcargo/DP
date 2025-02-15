@@ -93,7 +93,7 @@ New Estimate
               </select> -->
             </td>
             <td>
-              <input type="text" name="amount" id="amount" class="form-control" readonly value=0.0 onblur="set_total()">              
+              <input type="text" name="amount" id="amount" class="form-control" readonly value=0.0 onblur="set_total()" onfocus="set_total()">              
             </td>
             <td>
               <!-- <button type="button" class="btn-close" disabled aria-label="Close"></button> -->
@@ -123,6 +123,7 @@ New Estimate
         <div class="col-2"></div>
         <div class="col-6 text-end">
           <label class="fw-semibold fs-5" id="sub_total">0.00</label>
+          <input hidden type="text" id="subtotal_text" name="subtotal_text" value=0.0>
           <!-- <input type="text" class="form-control"> -->
         </div>
       </div>
@@ -130,7 +131,7 @@ New Estimate
         <div class="col-3"> <label class="fw-normal fs-5">Discount</label> </div>
         <div class="col-4">
           <div class="input-group mb-3">
-            <input type="text" class="form-control" aria-label="Text input with dropdown button" id="discount" onblur="put_discount()" value=0>
+            <input type="text" class="form-control" aria-label="Text input with dropdown button" id="discount" onchange="put_discount()" value=0>
             <span class="input-group-text"><img src="{% static 'ico/black-rupee.svg' %}" alt="" height=20></span>
            
           </div>
@@ -145,23 +146,32 @@ New Estimate
       {% if tax == True %}
       <div class="row mt-2 mb-2">
         <div class="col-6"><label class="fw-bold fs-6" id="label_sgst">SGST</label></div>
-        <div class="col-6 text-end"><label class="fw-semibold fs-6" id="sgst">0.00</label></div>
+        <div class="col-6 text-end">
+          <label class="fw-semibold fs-6" id="sgst">0.00</label>
+          <input hidden type="text" id="sgst_text" name="sgst_text" value=0.0>
+        </div>
       </div>
       <div class="row mt-2 mb-2">
         <div class="col-6"><label class="fw-bold fs-6" id="label_sgst">CGST</label></div>
-        <div class="col-6 text-end"><label class="fw-semibold fs-6" id="cgst">0.00</label></div>
+        <div class="col-6 text-end">
+          <label class="fw-semibold fs-6" id="cgst">0.00</label>
+          <input hidden type="text" id="cgst_text" name="cgst_text" value=0.0>
+        </div>
       </div>
       {% else %}
       <div class="row mt-2 mb-2">
         <div class="col-6"><label class="fw-bold fs-6" id="label_igst">IGST</label></div>
-        <div class="col-6 text-end"><label class="fw-semibold fs-6" id="igst">0.00</label></div>
+        <div class="col-6 text-end">
+          <label class="fw-semibold fs-6" id="igst">0.00</label>
+          <input hidden type="text" id="igst_text" name="igst_text" value=0.0>
+        </div>
       </div>
       {% endif %}
       <div class="row mt-2 mb-2">
         <div class="col-4"><label class="fw-semibold fs-5">Total</label></div>
         <div class="col-2"></div>
-        <div class="col-6 text-end"><label class="fw-semibold fs-6" id="total">0.00</label></div>
-        <input hidden type="text" id="total_text" name="total_text">
+        <div class="col-6 text-end"><label class="fw-semibold fs-5 text-danger" id="total">0.00</label></div>
+        <input hidden type="text" id="total_text" name="total_text" value=0.0>
       </div>
 
       <div class="row mt-2 mb-2">
@@ -179,7 +189,7 @@ New Estimate
         <div class="col-4"><label class="fw-semibold fs-5">Balance</label></div>
         <div class="col-2"></div>
         <div class="col-6 text-end"><label class="fw-semibold fs-6" id="balance">0.00</label></div>
-        <input hidden type="text" id="balance_text" name="balance_text">
+        <input hidden type="text" id="balance_text" name="balance_text" value="0.0">
       </div>
     </div>
     <div class="col-1"></div>

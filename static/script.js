@@ -69,20 +69,26 @@ function set_total() {
         
         amount += Number(table.rows[i].cells[5].children[0].value);
         taxable_amount += qty*rate;
-        document.getElementById('sub_total').innerText = taxable_amount;
     }
+        document.getElementById('sub_total').innerText = taxable_amount;
+        document.getElementById('subtotal_text').value = taxable_amount;
+
     if(document.getElementById('sgst')) {
         document.getElementById('sgst').innerText = Number((amount - taxable_amount)/2).toFixed(2);
+        document.getElementById('sgst_text').value = Number((amount - taxable_amount)/2).toFixed(2);        
     }
     if(document.getElementById('cgst')) {
         document.getElementById('cgst').innerText = Number((amount - taxable_amount)/2).toFixed(2);
+        document.getElementById('cgst_text').value = Number((amount - taxable_amount)/2).toFixed(2);
     }
     if(document.getElementById('igst')) {
         document.getElementById('igst').innerText = Number((amount - taxable_amount)).toFixed(2);
+        document.getElementById('igst_text').value = Number((amount - taxable_amount)).toFixed(2);
     }
     
     document.getElementById('total').innerText = Math.round(amount);
     document.getElementById('total_text').value = Math.round(amount);
+    advance_added()
 }
 
 function tax_applied() {
@@ -156,7 +162,7 @@ function add_row() {
               <input type="text" name="tax" id="tax" class="form-control" maxlength=2 value=0 onchange="tax_applied()">
             </td>`
     cell5.innerHTML = cell5.innerHTML + `<td>
-              <input type="text" name="amount" id="amount" class="form-control" readonly  value=0.0 onblur="set_total()">              
+              <input type="text" name="amount" id="amount" class="form-control" readonly  value=0.0 onblur="set_total()" onfocus="set_total()">              
             </td>`
     cell6.innerHTML = cell6.innerHTML + `<td>
               <button type="button" class="btn-close" aria-label="Close" onclick="delete_row()"></button>

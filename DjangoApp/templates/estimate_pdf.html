@@ -6,73 +6,89 @@ Estimate
 {% endblock %}
 
 {% block body %}
-
-<div class="container">
-	<div id="jobprint" class="container card a4_page">
-		<div class="text-center">
-			<!-- <embed src="{% static '2799.pdf' %}" type="" width=900 height=600>		 -->
-		</div>	
-
-		<input type="button" value="Print" class="btn btn-primary" onclick="window.print()">
-
-			<table class="table" id="table_header" style="width: 100%;">
-			<tbody>
-				<tr class="row border border-secondary border-2">
-					<td class="col-3 ms-5">
-						<img class="" src="{% static 'img/PP Logo.png' %}" alt="Company Logo" height=30rem>
-					</td>
-					<td class="col-4">
-						<div id="company_name"><label class="fs-2">COMPANY NAME</label></div>
-						<div id="company_address"><label class="fs-6">Company Address</label></div>
-						<div id="company_contact"><label class="fs-6">Contact No</label></div>
-						<div id="company_email"><label class="fs-6">Email</label></div>
-						<div class="align-text-bottom" id="company_gstin"><label class="fs-5">GSTIN</label></div>
-					</td>
-					<td class="col text-end me-5">
-						<div id="doc_type"><label class="fs-1">ESTIMATE</label></div>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-
-		<table class="table" id="table_details">
-			<thead>
-				<tr>
-					<th scope="col" style="width: 50%;"></th>
-					<th scope="col" style="width: 50%;"></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-
-				</tr>
-				
-			</tbody>
-			
-		</table>
-
-
-
-		<div class="row border-secondary ms-5 me-5 mt-5">
-			{{data}}
-
-			<div class="col-3" id="logo">
-				<img class="border-secondary" src="{% static 'img/PP Logo.png' %}" alt="Company Logo" height=196>
+<div class="container border border-secondary border-3">
+	<div class="border border-secondary border-1 mt-2">
+		<div class="row mx-3 mt-3">
+			<div class="col-2">
+				<img src="{% static 'img/logo.jpg' %}" alt="company_logo" height="96px">
 			</div>
-			<div class="col-4">
-				<div id="company_name"><label class="fs-2">COMPANY NAME</label></div>
-				<div id="company_address"><label class="fs-6">Company Address</label></div>
-				<div id="company_contact"><label class="fs-6">Contact No</label></div>
-				<div id="company_email"><label class="fs-6">Email</label></div>
-				<div class="align-text-bottom" id="company_gstin"><label class="fs-5">GSTIN</label></div>
-
+			<div class="col-6">
+				<div><label class="fs-5"><strong>{{company_details.company_name}}</strong></label></div>
+				<div><label>{{company_details.address}}, {{company_details.city}}</label></div>
+				<div><label>Ph.: {{company_details.contact}}</label></div>
+				<div><label>Email: {{company_details.email}}</label></div>
+				<div class="align-text-bottom mt-1" id="company_gstin"><label class="fs-6">GSTIN {{company_details.gstin|upper}}</label></div>
 			</div>
-			<div class="col-5">
-				<div id="doc_type" class="position-absolute bottom-0 end-0 me-5"><label class="fs-1">ESTIMATE</label></div>
+			<div class="col-4 text-end">
+				<label class="fs-2 fw-semibold">ESTIMATE</label>
 			</div>
 		</div>
-		<hr>
 	</div>
+	
+	<table class="table table-bordered mt-3">
+		<tbody>
+			<tr class="row mx-3">
+				<td class="col">Bill To : <strong>{{ customer }}</strong></td>
+				<td class="col">Estimate No. : <strong>{{ jobno }}</strong></td>
+			</tr>
+			<tr class="row mx-3">
+				<td class="col">Contact No. : <strong>{{ contact }}</strong></td>
+				<td class="col">Date : <strong>{{ job_date }}</strong></td>
+			</tr>
+		</tbody>
+	</table>
+
+	<table class="table table-bordered mt-3">
+		<thead class="">
+			<tr class="row mx-3">
+				<th scope="col" class="col-1 text-center">#</th>
+				<th scope="col" class="col-6 text-start">Item & Description</th>
+				<th scope="col" class="col-1 text-end">Qty</th>
+				<th scope="col" class="col-1 text-end">Rate</th>
+				<th scope="col" class="col-1">Tax</th>
+				<th scope="col" class="col-2 text-end">Amount</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for line in order %}
+			<tr class="row mx-3">
+				<td class="col-1">{{loop.index}}</td>
+				<td class="col-6"><strong>{{line.0}}</strong><br>{{line.1}}</td>
+				<td class="col-1">{{line.2}}</td>
+				<td class="col-1">{{line.3}}</td>
+				<td class="col-1">{{line.4}}</td>
+				<td class="col-2">{{line.5}}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<div class="row">
+		<div class="col-9"></div>
+		<div class="col card">
+			<table class="table table-striped mt-3">
+				<tbody>
+					<tr>
+						<td class="text-end">Sub Total</td>
+						<td class="text-end">{{ subtotal }}</td>
+					</tr>
+					<tr>
+						<td class="text-end">Total</td>
+						<td class="text-end">{{ total }}</td>
+						
+					</tr>
+				</tbody>
+			</table>
+
+			<!-- <div class="row">
+			<div class="col text-start"></div>
+			<div class="col text-end"></div> -->
+		</div>
+		</div>
+	</div>
+
 </div>
 
 {% endblock %}
+
+
+<!-- <QueryDict: {'csrfmiddlewaretoken': ['WYLzljOPDD5jgxvFR51im7uKLUkbGdxnnCjg8SJXsz7nWgAKAI7QCv7wWPitJERv'], 'jobno': ['121'], 'job_date': ['14-Feb-2025'], 'customer_name': ['PRINT PLUS'], 'customer_contact': ['9945071790'], 'item': ['Trodat Seal', '300gsm', 'Star Flex'], 'desc': ['2.0', 'A4_SS', '3x2 Feet'], 'qty': ['1', '50', '2'], 'rate': ['400', '15', '350'], 'tax': ['0', '18', '0'], 'amount': ['400.00', '885.00', '700.00'], 'total_text': ['1985'], 'advance': ['1000'], 'balance_text': ['985']}></QueryDict:> -->
