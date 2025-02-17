@@ -4,13 +4,14 @@ from django.contrib import messages
 from .forms import *
 from .models import *
 from datetime import date
-import json, os
+import os
+from json import dumps, load, dump
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 with open(os.path.join(BASE_DIR,"static/json/company-master.json"), 'r') as f:
-	company_details = json.load(f)
+	company_details = load(f)
 
 def home(request):
 	if request.method == 'POST':
@@ -38,7 +39,7 @@ def register_company(request):
 			context = form.cleaned_data
 			file_name = os.path.join(BASE_DIR,'static/json/company-master.json')
 			with open(file_name, 'w') as f:
-				json.dump(form.cleaned_data, f)
+				dump(form.cleaned_data, f)
 			
 			messages.success(request, "Company Registered Successfully")
 			return redirect('register')
@@ -175,22 +176,23 @@ def estimate(request):
 	else:
 		pass
 
+	products = ['300gsm', '130gsm', '170gsm', 'PVC Sticker Sheet', 'Paper Sticker Sheet', 'ID Card', 'Tshirt', 'Card Holder']
 
 	gst = {
-		'select': 'Select a Tax',
-		'gst-0': 0,
-		'gst-5': 5,
-		'gst-12': 12,
-		'gst-18': 18,
-		'gst-28': 28,
+		"GST0": 0,
+		"GST5": 5,
+		"GST12": 12,
+		"GST18": 18,
+		"GST28": 28,
 	}
 	today = date.today().strftime("%d-%b-%Y")
-	tax = False #{"istate":True, "state":False}
-
+	tax = True #{"istate":True, "state":False}
+	# gst = dumps(gst)
 	context = {
 		'gst':gst,
 		'tax':tax,
-		'today':today
+		'today':today,
+		'products' : products
 	}
 	return render(request, 'estimate.html', context)
 

@@ -17,22 +17,17 @@ New Estimate
     <div class="row">
       <div class="col-3">
         <div class="input-group mb-3 mt-3 text-end">
-          <span class="input-group-text fw-semibold" id="basic-addon1">Estimate Number</span>
-          <input type="text" name="jobno" class="form-control fw-bold fs-5 text-danger text-end" maxlength=5>
+          <span class="input-group-text" id="basic-addon1">Estimate Number</span>
+          <input type="text" name="jobno" class="form-control fw-bold fs-5 text-danger text-end" maxlength=5 value="">
         </div>
       </div>
     </div>
 
     <div class="row">
       <div class="col-3">
-        <div class="input-group mb-3 text-end fw-semibold">
-          <span class="input-group-text fw-semibold" id="basic-addon1">Estimate Date</span>
+        <div class="input-group mb-3 text-end">
+          <span class="input-group-text" id="basic-addon1">Estimate Date</span>
           <input type="text" name="job_date" class="form-control fw-semibold fs-6 text-dark text-end" maxlength=11 value="{{ today }}">
-          <!-- <a class="" href="">
-            <span class="input-group-text bg-secondary">
-              <img src="{% static 'ico/calendar.png' %}" alt="" height=28>
-            </span>
-          </a> -->
         </div>
       </div>
     </div>
@@ -49,61 +44,61 @@ New Estimate
 
     <div class="row">
       <div class="text-center bg-secondary bg-opacity-10 p-2 fs-5 mb-3 fw-semibold">Item Table</div>
-      <div class="col-1"></div>
-      <div class="col-10">
       
-        <table class="table text-center mb-4" id="est_table">
+      <div class="col">
+      
+        <table class="table table-bordered text-center mb-4" id="est_table">
         <thead>
-          <tr class="fw-normal">
-            <!-- <th scope="col">#</th> -->
-          
-              <th scope="col" class="col-2 text-start">Item</th>
-              <th scope="col" class="col-3">Item Description</th>
-              <th scope="col" class="col-1">Quantity</th>
-              <th scope="col" class="col-1">Rate</th>
-              <th scope="col" class="col-1">Tax</th>
-              <th scope="col" class="col-1">Amount</th>
-              <th scope="col" class="col-1">Action</th>
+          <tr class="fw-normal">          
+              <th scope="col" class="col-3 text-start">Item</th>
+              <th scope="col" class="col text-end">Quantity</th>
+              <th scope="col" class="col text-end">Rate</th>
+              <th scope="col" class="col text-end">Tax</th>
+              <th scope="col" class="col text-end">Amount</th>
+              <th scope="col" class="col">Action</th>
           </tr>
         </thead>
         
         <tbody>
           <tr>
-            <td>
-              <!-- <select class="form-select" name="product" id="product">
-                <option value=""></option>
-              </select> -->
-              <input type="text" name="item" id="item" class="form-control">
+            <td id="table_item_list">
+              <div>
+                <select name="item-select" id="item-select" class="form-select">
+                  <option selected value="">Select Item</option>
+                  {% for i in products %}
+                  <option value="{{i}}">{{i}}</option>
+                  {% endfor %}
+                </select>
+                <textarea class="form-control fs-6 mt-1" name="desc" id="desc" rows="2" placeholder="Enter item description"></textarea>
+              </div>
             </td>
-            <td>
-              <input type="text" name="desc" id="desc" class="form-control" maxlength=30>
-            </td>
+
             <td>
               <input type="text" name="qty" id="qty" class="form-control" maxlength=5 value=0.0 onchange="qty_changed()">
             </td>
+
             <td>
               <input type="text" name="rate" id="rate" class="form-control" maxlength=5 value=0.0 onchange="rate_changed()">
             </td>
-            <td>
-              <input type="text" name="tax" id="tax" class="form-control" maxlength=2 value=0 onchange="tax_applied()">
-              <!-- <select class="form-select" name="tax" id="tax_rate">
-                {% for i in gst.values %}
-                <option value="">{{i}}</option>
+
+            <td id="table_tax_list">
+              <select class="form-select" name="tax_rate" id="tax_rate" onchange="">
+                <option selected value="">Select tax</option>
+                {% for k, i in gst.items %}
+                <option value="{{i}}">{{k}} [{{i}}%]</option>
                 {% endfor %}
-              </select> -->
+              </select>
             </td>
             <td>
               <input type="text" name="amount" id="amount" class="form-control" readonly value=0.0 onblur="set_total()" onfocus="set_total()">              
             </td>
             <td>
-              <!-- <button type="button" class="btn-close" disabled aria-label="Close"></button> -->
             </td>
           </tr>
           
         </tbody>
       </table>
     </div>
-    <div class="col-1"></div>
   </div>
 
   <div class="row mb-4">
@@ -115,9 +110,9 @@ New Estimate
       <input type="button" class="btn btn-outline-primary" value="Show Summary" onclick="show_summary()">
     </div>
   </div>
-  <div hidden class="row mb-4" id="summary_tag">
-    <div class="col-6"></div>
-    <div class="col-5 card bg-primary bg-opacity-10">
+  <div hidden class="row mb-4 me-1" id="summary_tag">
+    <div class="col-7"></div>
+    <div class="col card bg-primary bg-opacity-10">
       <div class="row mt-2 mb-2">
         <div class="col-4"><label class="fw-semibold fs-5">Sub Total</label></div>
         <div class="col-2"></div>
@@ -128,20 +123,15 @@ New Estimate
         </div>
       </div>
       <div class="row mt-2 mb-2">
-        <div class="col-3"> <label class="fw-normal fs-5">Discount</label> </div>
-        <div class="col-4">
+        <div class="col-2"> <label class="fw-normal">Discount</label> </div>
+        <div class="col-6">
           <div class="input-group mb-3">
-            <input type="text" class="form-control" aria-label="Text input with dropdown button" id="discount" onchange="put_discount()" value=0>
-            <span class="input-group-text"><img src="{% static 'ico/black-rupee.svg' %}" alt="" height=20></span>
+            <input type="text" class="form-control form-control-sm text-end" aria-label="Text input with dropdown button" id="discount" onchange="set_total()" value=0>
+            <span class="input-group-text"><img src="{% static 'ico/black-rupee.svg' %}" alt="" height=15px></span>
            
           </div>
-          
-          <!-- <select class="form-control" name="discount" id="discount">
-            <option value="1">1</option>
-          </select> -->
-          <!-- <input type="text" class="form-control"> -->
         </div>
-        <div class="col-5 text-end"><label class="fw-semibold" id="disc_value">0</label></div>
+        <div class="col-4 text-end"><label class="fw-semibold" id="disc_value">0</label></div>
       </div>
       {% if tax == True %}
       <div class="row mt-2 mb-2">
@@ -192,7 +182,6 @@ New Estimate
         <input hidden type="text" id="balance_text" name="balance_text" value="0.0">
       </div>
     </div>
-    <div class="col-1"></div>
   </div>
   <div class="ms-5 mb-4">
     <div class="ms-5">

@@ -6,6 +6,7 @@ Estimate
 {% endblock %}
 
 {% block body %}
+{{data}}
 <div class="container border border-secondary border-3">
 	<div class="border border-secondary border-1 mt-2">
 		<div class="row mx-3 mt-3">
@@ -52,7 +53,7 @@ Estimate
 		<tbody>
 			{% for line in order %}
 			<tr class="row mx-3">
-				<td class="col-1">{{loop.index}}</td>
+				<td class="col-1">{{forloop.index}}</td>
 				<td class="col-6"><strong>{{line.0}}</strong><br>{{line.1}}</td>
 				<td class="col-1">{{line.2}}</td>
 				<td class="col-1">{{line.3}}</td>
