@@ -9,9 +9,9 @@ Estimate
 {{data}}
 <div class="container border border-secondary border-3">
 	<div class="border border-secondary border-1 mt-2">
-		<div class="row mx-3 mt-3">
+		<div class="row mx-2 my-2">
 			<div class="col-2">
-				<img src="{% static 'img/logo.jpg' %}" alt="company_logo" height="96px">
+				<img src="{% static 'img/logo.jpg' %}" alt="company_logo" height="128px">
 			</div>
 			<div class="col-6">
 				<div><label class="fs-5"><strong>{{company_details.company_name}}</strong></label></div>
@@ -54,7 +54,11 @@ Estimate
 			{% for line in order %}
 			<tr class="row mx-3">
 				<td class="col-1">{{forloop.index}}</td>
-				<td class="col-6"><strong>{{line.0}}</strong><br>{{line.1}}</td>
+				<td class="col-6">
+					<!-- <strong>{{line.0}}</strong><br>{{line.1}}</td> -->
+					<strong>{{line.0}}</strong>
+					<div class="text-black-50">{{line.1}}</div>
+				</td>
 				<td class="col-1">{{line.2}}</td>
 				<td class="col-1">{{line.3}}</td>
 				<td class="col-1">{{line.4}}</td>
@@ -92,4 +96,3 @@ Estimate
 {% endblock %}
 
 
-<!-- <QueryDict: {'csrfmiddlewaretoken': ['WYLzljOPDD5jgxvFR51im7uKLUkbGdxnnCjg8SJXsz7nWgAKAI7QCv7wWPitJERv'], 'jobno': ['121'], 'job_date': ['14-Feb-2025'], 'customer_name': ['PRINT PLUS'], 'customer_contact': ['9945071790'], 'item': ['Trodat Seal', '300gsm', 'Star Flex'], 'desc': ['2.0', 'A4_SS', '3x2 Feet'], 'qty': ['1', '50', '2'], 'rate': ['400', '15', '350'], 'tax': ['0', '18', '0'], 'amount': ['400.00', '885.00', '700.00'], 'total_text': ['1985'], 'advance': ['1000'], 'balance_text': ['985']}></QueryDict:> -->

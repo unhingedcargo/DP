@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import *
@@ -147,11 +147,11 @@ def estimate(request):
 
 	if request.method == 'POST':
 		data = dict(request.POST)
-		item = data['item']
+		item = data['item_select']
 		desc = data['desc']
 		qty = data['qty']
 		rate = data['rate']
-		tax = data['tax']
+		tax = data['tax_rate']
 		amount = data['amount']
 		order = []
 		for i in range(len(amount)):
@@ -161,14 +161,14 @@ def estimate(request):
 		context = {
 			'data': data,
 			'company_details' : company_details,
-			'customer': data['customer_name'][0],
-			'contact': data['customer_contact'][0],
-			'jobno' : data['jobno'][0],
-			'job_date' : data['job_date'][0],
-			'subtotal' : data['subtotal_text'][0],
-			'total' : data['total_text'][0],
-			'advance': data['advance'][0],
-			'balance' : data['balance_text'][0],
+			# 'customer': data['customer_name'][0],
+			# 'contact': data['customer_contact'][0],
+			# 'jobno' : data['jobno'][0],
+			# 'job_date' : data['job_date'][0],
+			# 'subtotal' : data['subtotal_text'][0],
+			# 'total' : data['total_text'][0],
+			# 'advance': data['advance'][0],
+			# 'balance' : data['balance_text'][0],
 			'order' : order
 		}
 		return render(request, 'estimate_pdf.html', context)
@@ -195,7 +195,6 @@ def estimate(request):
 		'products' : products
 	}
 	return render(request, 'estimate.html', context)
-
 
 
 

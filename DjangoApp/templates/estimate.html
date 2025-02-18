@@ -63,7 +63,7 @@ New Estimate
           <tr>
             <td id="table_item_list">
               <div>
-                <select name="item-select" id="item-select" class="form-select">
+                <select name="item_select" id="item_select" class="form-select">
                   <option selected value="">Select Item</option>
                   {% for i in products %}
                   <option value="{{i}}">{{i}}</option>
@@ -82,12 +82,13 @@ New Estimate
             </td>
 
             <td id="table_tax_list">
-              <select class="form-select" name="tax_rate" id="tax_rate" onchange="">
+              <select class="form-select" name="tax_rate" id="tax_rate" onchange="tax_applied()">
                 <option selected value="">Select tax</option>
                 {% for k, i in gst.items %}
                 <option value="{{i}}">{{k}} [{{i}}%]</option>
                 {% endfor %}
               </select>
+              <input hidden type="text" name="tax_amount" id="tax_amount" value=0.0>
             </td>
             <td>
               <input type="text" name="amount" id="amount" class="form-control" readonly value=0.0 onblur="set_total()" onfocus="set_total()">              
@@ -108,6 +109,7 @@ New Estimate
     </div>
     <div class="col-5 text-end">
       <input type="button" class="btn btn-outline-primary" value="Show Summary" onclick="show_summary()">
+      <input type="text" name="applied_tax_amount" id="applied_tax_amount">
     </div>
   </div>
   <div hidden class="row mb-4 me-1" id="summary_tag">
@@ -126,7 +128,7 @@ New Estimate
         <div class="col-2"> <label class="fw-normal">Discount</label> </div>
         <div class="col-6">
           <div class="input-group mb-3">
-            <input type="text" class="form-control form-control-sm text-end" aria-label="Text input with dropdown button" id="discount" onchange="set_total()" value=0>
+            <input type="text" class="form-control form-control-sm text-end" aria-label="Text input with dropdown button" id="discount" name="discount" onchange="set_total()" value=0>
             <span class="input-group-text"><img src="{% static 'ico/black-rupee.svg' %}" alt="" height=15px></span>
            
           </div>
@@ -186,6 +188,7 @@ New Estimate
   <div class="ms-5 mb-4">
     <div class="ms-5">
     <input type="submit" value="Submit" class="btn btn-primary">
+    <a href="#" id="do_nothing" class="btn btn-outline-danger" onclick="do_nothing()">Do Nothing</a>
   </div>
 </div>
 
