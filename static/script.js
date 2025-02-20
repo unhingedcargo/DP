@@ -155,7 +155,9 @@ function add_row() {
 
 
   function do_nothing() {
+
     let table = document.getElementById('est_table');
+    console.log("" + table.outerHTML);
     let gst0=0.0, gst5=0.0, gst12=0.0, gst18=0.0, gst28=0.0;
     for(let i = 1; i<table.rows.length; i++) {
         let tax_rate = Number(table.rows[i].cells[3].children[0].value);
@@ -197,3 +199,28 @@ function add_row() {
         // console.log("GST28  -  "+gst28);
     
 }
+
+
+function search_customer() {
+    let cust_list_html = document.getElementById('customer_search');
+    cust_list_html.removeAttribute('hidden')
+
+    console.log(cust_list_html.outerHTML);
+
+    let cust_json = JSON.parse(document.getElementById('customer_json').textContent);
+    // console.log(cust_json);
+    for(let i =0; i<cust_json.length;i++) {
+        let cust_link = document.createElement('a');
+        cust_link.type = 'button'
+        cust_link.href = '#';
+        cust_link.class = "list-group-item btn btn-outline-secondary";
+        cust_link.id = "customer_list";
+        cust_link.innerText = cust_json[i];
+        cust_link.value = cust_json[i];
+        cust_list_html.appendChild(cust_link);
+    }
+}
+
+
+
+{/* <a href="#" class="list-group-item list-group-item-action" id="customer_list"></a> */}

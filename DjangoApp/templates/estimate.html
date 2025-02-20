@@ -6,6 +6,8 @@ New Estimate
 {% endblock %} 
 
 {% block body %}
+{{customer|json_script:"customer_json"}}
+
 <div class="container" >
   <h1>New Estimate</h1>
 </div>
@@ -13,12 +15,67 @@ New Estimate
 
   <form action="" method="POST">
     {% csrf_token %}
+
+    <div class="row">
+      <div class="col-6">
+        <div class="input-group mb-3 mt-3">
+          <span class="input-group-text fw-semibold">Customer Name</span>
+          <input type="text" name="customer_name" class="form-control rounded-end" maxlength=20 autofocus>
     
+          <!-- <a class="bg-primary ms-3 rounded-3" href="#"><span><img class="ps-2 pe-2 pt-2" src="{% static 'ico/search.png' %}" alt="" height=30></span></a> -->
+          <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary rounded-3 ms-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  <img class="py-1" src="{% static 'ico/search.png' %}" alt="" height=30>
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Search Customer</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <!-- <div class="col-2"></div> -->
+          <div class="col px-5">
+            <!-- <span class="input-group-text fw-semibold">Customer Name</span> -->
+          <input type="text" name="customer_name" class="form-control rounded-end my-3" maxlength=20 autofocus placeholder="Search Customer..." oninput="search_customer()" onchange="search_customer()">
+          </div>
+
+          <div class="list-group" id="customer_search">
+            <a href="#" class="list-group-item list-group-item-action" id="customer_list"></a>
+          </div>
+          <!-- <div class="col-4"></div> -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <input type="submit" value="Select Customer" class="btn btn-primary">
+        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-5">
+        <div class="input-group mb-3 mt-3">      
+          <span class="input-group-text fw-semibold me-3">Contact No.</span>
+          <input type="text" name="customer_contact" class="form-control ms-3 rounded-end" maxlength=10>
+        </div>
+      </div>
+    </div>
+
     <div class="row">
       <div class="col-3">
         <div class="input-group mb-3 mt-3 text-end">
           <span class="input-group-text" id="basic-addon1">Estimate Number</span>
-          <input type="text" name="jobno" class="form-control fw-bold fs-5 text-danger text-end" maxlength=5 value="">
+          <input type="text" name="jobno" class="form-control fw-bold fs-5 text-danger text-end rounded-end" maxlength=5 value="">
         </div>
       </div>
     </div>
@@ -31,16 +88,6 @@ New Estimate
         </div>
       </div>
     </div>
-    
-    <div class="input-group mb-3">
-      <span class="input-group-text fw-semibold">Customer Name</span>
-      <input type="text" name="customer_name" class="form-control" maxlength=20 autofocus>
-
-      <a class="bg-primary" href="#"><span><img class="ps-2 pe-2 pt-2" src="{% static 'ico/search.png' %}" alt="" height=30></span></a>
-      
-      <span class="input-group-text fw-semibold">Contact No.</span>
-      <input type="text" name="customer_contact" class="form-control" maxlength=10>
-    </div>
 
     <div class="row">
       <div class="text-center bg-secondary bg-opacity-10 p-2 fs-5 mb-3 fw-semibold">Item Table</div>
@@ -50,7 +97,7 @@ New Estimate
         <table class="table table-bordered text-center mb-4" id="est_table">
         <thead>
           <tr class="fw-normal">          
-              <th scope="col" class="col-3 text-start">Item</th>
+              <th scope="col" class="col-3 text-center">Item & Description</th>
               <th scope="col" class="col text-end">Quantity</th>
               <th scope="col" class="col text-end">Rate</th>
               <th scope="col" class="col text-end">Tax</th>
@@ -74,11 +121,11 @@ New Estimate
             </td>
 
             <td>
-              <input type="text" name="qty" id="qty" class="form-control" maxlength=5 value=0.0 onchange="qty_changed()">
+              <input type="text" name="qty" id="qty" class="form-control text-end" maxlength=5 value=0.0 onchange="qty_changed()">
             </td>
 
             <td>
-              <input type="text" name="rate" id="rate" class="form-control" maxlength=5 value=0.0 onchange="rate_changed()">
+              <input type="text" name="rate" id="rate" class="form-control text-end" maxlength=5 value=0.0 onchange="rate_changed()">
             </td>
 
             <td id="table_tax_list">
@@ -91,7 +138,7 @@ New Estimate
               <input hidden type="text" name="tax_amount" id="tax_amount" value=0.0>
             </td>
             <td>
-              <input type="text" name="amount" id="amount" class="form-control" readonly value=0.0 onblur="set_total()" onfocus="set_total()">              
+              <input type="text" name="amount" id="amount" class="form-control text-end" readonly value=0.0 onblur="set_total()" onfocus="set_total()">              
             </td>
             <td>
             </td>
@@ -103,13 +150,13 @@ New Estimate
   </div>
 
   <div class="row mb-4">
-    <div class="col-1"></div>
-    <div class="col-5">
+    <!-- <div class="col-1"></div> -->
+    <div class="col">
       <input type="button" class="btn btn-outline-primary" value="Add Row" onclick="add_row()">
     </div>
-    <div class="col-5 text-end">
+    <div class="col text-end">
       <input type="button" class="btn btn-outline-primary" value="Show Summary" onclick="show_summary()">
-      <input type="text" name="applied_tax_amount" id="applied_tax_amount">
+      <input hidden type="text" name="applied_tax_amount" id="applied_tax_amount">
     </div>
   </div>
   <div hidden class="row mb-4 me-1" id="summary_tag">
@@ -185,11 +232,11 @@ New Estimate
       </div>
     </div>
   </div>
-  <div class="ms-5 mb-4">
-    <div class="ms-5">
+  <div class="text-center mb-4">
+    
     <input type="submit" value="Submit" class="btn btn-primary">
     <a href="#" id="do_nothing" class="btn btn-outline-danger" onclick="do_nothing()">Do Nothing</a>
-  </div>
+
 </div>
 
   </form>

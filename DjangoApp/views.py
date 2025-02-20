@@ -178,6 +178,8 @@ def estimate(request):
 
 	products = ['300gsm', '130gsm', '170gsm', 'PVC Sticker Sheet', 'Paper Sticker Sheet', 'ID Card', 'Tshirt', 'Card Holder']
 
+	customer = ['A','b','c','d','e']
+
 	gst = {
 		"GST0": 0,
 		"GST5": 5,
@@ -192,7 +194,8 @@ def estimate(request):
 		'gst':gst,
 		'tax':tax,
 		'today':today,
-		'products' : products
+		'products' : products,
+		'customer':customer
 	}
 	return render(request, 'estimate.html', context)
 
