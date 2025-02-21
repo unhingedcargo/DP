@@ -6,7 +6,8 @@ New Estimate
 {% endblock %} 
 
 {% block body %}
-{{customer|json_script:"customer_json"}}
+
+{{customer_list|json_script:"customer_json"}}
 
 <div class="container" >
   <h1>New Estimate</h1>
@@ -20,13 +21,30 @@ New Estimate
       <div class="col-6">
         <div class="input-group mb-3 mt-3">
           <span class="input-group-text fw-semibold">Customer Name</span>
-          <input type="text" name="customer_name" class="form-control rounded-end" maxlength=20 autofocus>
-    
+          <input hidden type="text" name="customer_name" class="form-control rounded-end" maxlength=20 autofocus oninput="search_customer()">
+          <select name="item_select" id="item_select" class="form-select" oninput="search_customer()">
+            <option selected value="">Customer...</option>
+            {% for i in customers %}
+            <option value="{{i.display_name}}">{{i.display_name}}</option>
+            {% endfor %}
+          </select>
+          <table class="table table-bordered mt-3">
+            <tbody>
+              <tr class="row mx-3">
+                <td class="col">Bill To : <strong>{{ customer }}</strong></td>
+                <td class="col">Estimate No. : <strong>{{ jobno }}</strong></td>
+              </tr>
+              <tr class="row mx-3">
+                <td class="col">Contact No. : <strong>{{ contact }}</strong></td>
+                <td class="col">Date : <strong>{{ job_date }}</strong></td>
+              </tr>
+            </tbody>
+          </table>
           <!-- <a class="bg-primary ms-3 rounded-3" href="#"><span><img class="ps-2 pe-2 pt-2" src="{% static 'ico/search.png' %}" alt="" height=30></span></a> -->
           <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary rounded-3 ms-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  <img class="py-1" src="{% static 'ico/search.png' %}" alt="" height=30>
-</button>
+          <!-- <button type="button" class="btn btn-primary rounded-3 ms-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <img class="py-1" src="{% static 'ico/search.png' %}" alt="" height=30>
+          </button> -->
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -58,6 +76,7 @@ New Estimate
     </div>
   </div>
 </div>
+<!-- Modal Ends here -->
         </div>
       </div>
     </div>
@@ -66,7 +85,7 @@ New Estimate
       <div class="col-5">
         <div class="input-group mb-3 mt-3">      
           <span class="input-group-text fw-semibold me-3">Contact No.</span>
-          <input type="text" name="customer_contact" class="form-control ms-3 rounded-end" maxlength=10>
+          <input type="text" name="customer_contact" id="customer_contact" class="form-control ms-3 rounded-end" maxlength=10>
         </div>
       </div>
     </div>

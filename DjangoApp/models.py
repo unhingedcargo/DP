@@ -16,7 +16,7 @@ class Customer(models.Model):
     closing_balance = models.FloatField()
 
     def __str__(self):
-        return (f"{self.name} - {self.contact}")
+        return (f"{self.name} - {self.contact} - {self.gstin}")
 
 class Sundry_debtors(models.Model):
     added_at = models.DateTimeField(auto_now_add=True)

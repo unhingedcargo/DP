@@ -202,25 +202,18 @@ function add_row() {
 
 
 function search_customer() {
-    let cust_list_html = document.getElementById('customer_search');
-    cust_list_html.removeAttribute('hidden')
-
-    console.log(cust_list_html.outerHTML);
-
-    let cust_json = JSON.parse(document.getElementById('customer_json').textContent);
-    // console.log(cust_json);
-    for(let i =0; i<cust_json.length;i++) {
-        let cust_link = document.createElement('a');
-        cust_link.type = 'button'
-        cust_link.href = '#';
-        cust_link.class = "list-group-item btn btn-outline-secondary";
-        cust_link.id = "customer_list";
-        cust_link.innerText = cust_json[i];
-        cust_link.value = cust_json[i];
-        cust_list_html.appendChild(cust_link);
-    }
+    let cust = document.getElementById('item_select');
+    console.log(cust);
+    let cust_json = document.getElementById('customer_json');
+    const cust_text = cust_json.outerText;
+    const cust_list = cust_text.split(",")
+    console.log(cust_list)
+    
 }
 
 
 
+
 {/* <a href="#" class="list-group-item list-group-item-action" id="customer_list"></a> */}
+
+// {{customer|json_script:"customer_json"}}
