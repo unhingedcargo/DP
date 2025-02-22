@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from models import *
+from .models import *
 
 class CustomerSerializers(serializers.HyperlinkedModelSerializer):
     class Meta:

@@ -8,7 +8,7 @@ from datetime import date
 import os
 from json import dumps, load, dump
 from pathlib import Path
-# from .serializers import *3
+# from .serializers import serializers
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -145,7 +145,6 @@ def delete_customer(request, cust):
 
 
 def estimate(request):
- 	
 # <QueryDict: {'csrfmiddlewaretoken': ['WYLzljOPDD5jgxvFR51im7uKLUkbGdxnnCjg8SJXsz7nWgAKAI7QCv7wWPitJERv'], 'jobno': ['121'], 'job_date': ['14-Feb-2025'], 'customer_name': ['PRINT PLUS'], 'customer_contact': ['9945071790'], 'item': ['Trodat Seal', '300gsm', 'Star Flex'], 'desc': ['2.0', 'A4_SS', '3x2 Feet'], 'qty': ['1', '50', '2'], 'rate': ['400', '15', '350'], 'tax': ['0', '18', '0'], 'amount': ['400.00', '885.00', '700.00'], 'total_text': ['1985'], 'advance': ['1000'], 'balance_text': ['985']}>
 
 	if request.method == 'POST':
@@ -179,9 +178,14 @@ def estimate(request):
 	else:
 		pass
 
-	products = ['300gsm', '130gsm', '170gsm', 'PVC Sticker Sheet', 'Paper Sticker Sheet', 'ID Card', 'Tshirt', 'Card Holder']
-
+	products = Product.objects.all().values()
+	product_list = dumps(list(products))
+	
 	customers = Customer.objects.all().values()
+	customer_list = dumps(list(customers))
+	# print(customers)
+	
+	
 	
 	gst = {
 		"GST0": 0,
@@ -198,8 +202,9 @@ def estimate(request):
 		'tax':tax,
 		'today':today,
 		'products' : products,
+		'product_list': product_list,
 		'customers':customers,
-		'customer_list':list(customers),
+		'customer_list': customer_list,
 		'company_gst_code' : company_details['gstin'][:2],
 	}
 	return render(request, 'estimate.html', context)

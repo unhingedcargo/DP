@@ -127,6 +127,7 @@ function delete_row() {
 function add_row() {
     const item_html = document.getElementById('table_item_list').outerHTML;
     const tax_html = document.getElementById('table_tax_list').outerHTML;
+    const table_body = document.getElementById("est_table_body").innerHTML;
     const table = document.getElementById('est_table');
     
     const newRow = table.insertRow();
@@ -200,20 +201,46 @@ function add_row() {
     
 }
 
+let x = document.getElementById("customercontainer");
+let cust_data = JSON.parse(x.getAttribute("data-json"));
 
 function search_customer() {
-    let cust = document.getElementById('item_select');
-    console.log(cust);
-    let cust_json = document.getElementById('customer_json');
-    const cust_text = cust_json.outerText;
-    const cust_list = cust_text.split(",")
-    console.log(cust_list)
-    
+    let c_search = document.getElementById("customer_select").value;
+    let c_load = document.getElementById("customer_load");
+
+    console.log(document.getElementById("est_table_body").innerHTML)
+       
+    for(let i=0;i<cust_data.length;i++) {
+        if (c_search == "") {
+            document.getElementById("customer_load").setAttribute("hidden","hidden");
+        } else if(c_search!="" && c_search == cust_data[i]['display_name']) {
+            cust_details = cust_data[i];
+
+        c_load.innerHTML = `<tbody class="text-start">
+        <tr class="row mx-3">
+        <td class="col bg-opacity-10 bg-light">Bill To : ${ cust_details['display_name'] }</td>
+            
+        </tr>
+        <tr class="row mx-3">
+        <td class="col bg-opacity-10 bg-light">Contact No. : ${ cust_details['contact'] }, ${ cust_details['alt_contact'] }</td>
+        
+        </tr>
+        
+        <tr class="row mx-3">
+        <td class="col bg-opacity-10 bg-light">Place of Supply : </td>
+        
+        </tr>
+    </tbody>`;
+        document.getElementById("customer_load").removeAttribute("hidden");
+
+        }
+    }
 }
 
 
 
 
-{/* <a href="#" class="list-group-item list-group-item-action" id="customer_list"></a> */}
+
+
 
 // {{customer|json_script:"customer_json"}}

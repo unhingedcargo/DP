@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Customer(models.Model):
-    added_at = models.DateTimeField(auto_now_add=True)
+    # added_at = models.DateTimeField(auto_now_add=True)
     acc_type = models.CharField(max_length=10)
     company_name = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
@@ -119,6 +119,9 @@ class Product(models.Model):
     igst = models.BooleanField(default=True)
     purchase_rate = models.FloatField()
     selling_rate = models.FloatField()
+
+    def __str__(self):
+        return f"{self.name}"
 
 class Month(models.Model):
     year = models.IntegerField()
