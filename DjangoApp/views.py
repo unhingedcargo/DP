@@ -56,9 +56,12 @@ def register_company(request):
 # PRODUCT PAGE VIEWS
 def product(request):
 	# products = Product.objects.all()
-	products = Product.objects.order_by('name')
+	products = Product.objects.order_by('name').values()
 	
-	return render(request, 'product.html', {'products':products})
+	context = {
+		'products':products
+	}
+	return render(request, 'product.html', context)
 
 def product_detail(request, prod):
 	product = Product.objects.get(pk=prod)
@@ -145,7 +148,6 @@ def delete_customer(request, cust):
 
 
 def estimate(request):
-# <QueryDict: {'csrfmiddlewaretoken': ['WYLzljOPDD5jgxvFR51im7uKLUkbGdxnnCjg8SJXsz7nWgAKAI7QCv7wWPitJERv'], 'jobno': ['121'], 'job_date': ['14-Feb-2025'], 'customer_name': ['PRINT PLUS'], 'customer_contact': ['9945071790'], 'item': ['Trodat Seal', '300gsm', 'Star Flex'], 'desc': ['2.0', 'A4_SS', '3x2 Feet'], 'qty': ['1', '50', '2'], 'rate': ['400', '15', '350'], 'tax': ['0', '18', '0'], 'amount': ['400.00', '885.00', '700.00'], 'total_text': ['1985'], 'advance': ['1000'], 'balance_text': ['985']}>
 
 	if request.method == 'POST':
 		data = dict(request.POST)

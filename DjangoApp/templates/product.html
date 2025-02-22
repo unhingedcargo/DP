@@ -8,7 +8,7 @@
 {% block body %}
 <div class='container'>
 	
-
+{{products}}
 	<div class="row">
 		<div class="col-10">
 			
@@ -35,7 +35,7 @@
 				{% for product in products %}
 					<tr>
 						<td>
-							<a type="submit" href="{{product.id}}">{{product.prod_name}}</a>
+							<a type="submit" href="{{product.id}}">{{product.name}}</a>
 						</td>
 						<td>-</td>
 						<td>{{product.unit}}</td>
