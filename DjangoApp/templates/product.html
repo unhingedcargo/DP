@@ -6,14 +6,14 @@
 
 
 {% block body %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=more_vert" />
 <div class='container'>
-	
-{{products}}
+	<h1>Items</h1>
 	<div class="row">
 		<div class="col-10">
 			
 		</div>
-		<div class="col-2">
+		<div class="col-2 text-end">
 			<a class="btn btn-primary mb-4" href="{% url 'add_product' %}">+New</a>
 			<a class="btn btn-light mb-4" href=""><span class="material-symbols-outlined">more_vert</span></a>
 		</div>

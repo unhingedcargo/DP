@@ -50,16 +50,19 @@ class SignUpForm(UserCreationForm):
         self.fields['password2'].label = ""
 
 class ProductInsert(forms.ModelForm):
-    prod_name = forms.CharField(label="", max_length=50, required=True, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Product Name'}))
+    name = forms.CharField(label="Product Name ", max_length=100, required=True, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Product Name'}))
+    hsn_code = forms.CharField(label="HSN/SAC Code", max_length=20, required=False, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'HSN/SAC Code'}))
     # unit = forms.CharField(label="", max_length=10, required=True, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Unit'}))
     unit = forms.ChoiceField(choices=(('nos','nos'),('set','set')), required=True, widget=forms.RadioSelect(), label='Unit')
+    tax_applicable = forms.BooleanField(initial=True, required=False, label="Taxable (tick if applicable)", widget=forms.CheckboxInput(attrs={'class':''}))
+    tax_rate = forms.ChoiceField(choices=((0.0,'GST0'),(5.0,'GST5'),(12.0,'GST12'),(18.0,'GST18'),(28.0,'GST28')), required=True, widget=forms.RadioSelect(), label='Tax Rate')
     # forms.ChoiceField((choices=(('nos'), ('set'))), required=True, widget=forms.)
     purchase_rate = forms.FloatField(label="", required=True, widget=forms.NumberInput(attrs={'class':'form-control', 'placeholder':'Purchase Price'}))
     selling_rate = forms.FloatField(label="", required=True, widget=forms.NumberInput(attrs={'class':'form-control', 'placeholder':'Selling Price'}))
 
     class Meta:
         model = Product
-        fields = ('prod_name', 'unit', 'purchase_rate', 'selling_rate')
+        fields = '__all__'
 
     def __init__(self, *args, **kwargs):
         super(ProductInsert, self).__init__(*args, **kwargs)

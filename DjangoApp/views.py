@@ -52,6 +52,12 @@ def register_company(request):
 		return render(request, 'register.html', context)
 	return render(request, 'register.html', context)
 
+# PROFILE MENU
+def user_profile(request):
+
+	context = {}
+
+	return render(request, 'company.html', context)
 
 # PRODUCT PAGE VIEWS
 def product(request):
@@ -151,7 +157,7 @@ def estimate(request):
 
 	if request.method == 'POST':
 		data = dict(request.POST)
-		item = data['item_select']
+		item = data['item']
 		desc = data['desc']
 		qty = data['qty']
 		rate = data['rate']
@@ -185,7 +191,6 @@ def estimate(request):
 	
 	customers = Customer.objects.all().values()
 	customer_list = dumps(list(customers))
-	# print(customers)
 	
 	
 	
@@ -198,7 +203,7 @@ def estimate(request):
 	}
 	today = date.today().strftime("%d-%b-%Y")
 	tax = True #{"istate":True, "state":False}
-	# gst = dumps(gst)
+
 	context = {
 		'gst':gst,
 		'tax':tax,

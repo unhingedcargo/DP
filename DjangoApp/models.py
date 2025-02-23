@@ -40,7 +40,7 @@ class Receipt(models.Model):
 
 class Jobcard(models.Model):
     jobno = models.IntegerField()
-    date = models.DateField(auto_now=True)
+    date = models.CharField(max_length=20)
     acc_type = models.CharField(max_length=10)
     order_id = models.BigIntegerField()
     cust_id = models.BigIntegerField()

@@ -61,10 +61,13 @@
           
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle ms-2" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><img class="rounded-circle bg-light" src="{% static 'ico/01images.png'%}" alt="" height=40></a>
-            <ul class="dropdown-menu me-2" aria-labelledby="navbarDropdown">
+            <ul class="dropdown-menu dropdown-menu-end me-2" aria-labelledby="navbarDropdown">
               <li><a class="dropdown-item" href="#">Company Details</a></li>
-              <li><a class="dropdown-item" href="#">Profile</a></li>
+              <li><a class="dropdown-item" href="{% url 'user_profile' %}">Profile</a></li>
               <li><a class="dropdown-item" href="#">Settings</a></li>
+              <li><a class="dropdown-item" href="#">Preference</a></li>
+
+
               <li><hr class="dropdown-divider"></li>
 
               <li>

@@ -9,6 +9,7 @@ New Estimate
 
 <div hidden id="customercontainer" data-json="{{ customer_list }}"></div>
 <div hidden id="productcontainer" data-json="{{ product_list }}"></div>
+<div hidden id="gstcode" data="{{ company_gst_code }}"></div>
 <!-- <script src="{% static 'script.js' %}" defer data-customer = "{{customers}}"></script> -->
 <div class="container" >
   <h1>New Estimate</h1>
@@ -22,9 +23,9 @@ New Estimate
       <div class="col-6">
         <div class="input-group mb-3 mt-3">
           <span class="input-group-text fw-semibold">Customer Name</span>
-          <input hidden type="text" name="customer_name" class="form-control rounded-end" maxlength=20 autofocus>
-          <select name="customer_select" id="customer_select" class="form-select" oninput="search_customer()">
-            <option selected value="">Customer...</option>
+          {% comment %} <input hidden type="text" name="customer_name" class="form-control rounded-end" maxlength=20 autofocus> {% endcomment %}
+          <select name="customer" id="customer_select" class="form-select" oninput="search_customer()">
+            <option selected value="">Select Customer...</option>
             {% for i in customers %}
             <option value="{{ i.display_name }}">{{ i.display_name }}</option>
             {% endfor %}
@@ -50,7 +51,7 @@ New Estimate
           <!-- <div class="col-2"></div> -->
           <div class="col px-5">
             <!-- <span class="input-group-text fw-semibold">Customer Name</span> -->
-          <input type="text" name="customer_name" class="form-control rounded-end my-3" maxlength=20 autofocus placeholder="Search Customer..." oninput="search_customer()" onchange="search_customer()">
+          <input type="text" class="form-control rounded-end my-3" maxlength=20 autofocus placeholder="Search Customer...">
           </div>
 
           <div class="list-group" id="customer_search">
@@ -72,11 +73,11 @@ New Estimate
       </div>
     </div>
 
-    <div hidden class="row">
+    <div hidden class="row" id="contact_text">
       <div class="col-5">
         <div class="input-group mb-3 mt-3">      
           <span class="input-group-text fw-semibold me-3">Contact No.</span>
-          <input type="text" name="customer_contact" id="customer_contact" class="form-control ms-3 rounded-end" maxlength=10>
+          <input type="text" id="customer_contact" class="form-control ms-3 rounded-end" maxlength=10>
         </div>
       </div>
     </div>
@@ -120,7 +121,7 @@ New Estimate
           <tr>
             <td id="table_item_list">
               <div>
-                <select name="item_select" id="item_select" class="form-select" onchange="item_added()">
+                <select name="item" id="item_select" class="form-select" onchange="item_added()">
                   <option selected value="">Select Item</option>
                   {% for i in products %}
                   <option value="{{i.name}}">{{i.name}}</option>
@@ -166,7 +167,7 @@ New Estimate
     </div>
     <div class="col text-end">
       <input type="button" class="btn btn-outline-primary" value="Show Summary" onclick="show_summary()">
-      <input hidden type="text" name="applied_tax_amount" id="applied_tax_amount">
+      <input hidden type="text" name="applied_tax_amount" id="applied_tax_amount" value=0>
     </div>
   </div>
   <div hidden class="row mb-4 me-1" id="summary_tag">
@@ -176,8 +177,8 @@ New Estimate
         <div class="col-4"><label class="fw-semibold fs-5">Sub Total</label></div>
         <div class="col-2"></div>
         <div class="col-6 text-end">
-          <label class="fw-semibold fs-5" id="sub_total">0.00</label>
-          <input hidden type="text" id="subtotal_text" name="subtotal_text" value=0.0>
+          <label class="fw-semibold fs-5" id="subtotal_text">0.00</label>
+          <input hidden type="text" id="subtotal" name="subtotal_text" value=0.0>
           <!-- <input type="text" class="form-control"> -->
         </div>
       </div>
@@ -192,35 +193,38 @@ New Estimate
         </div>
         <div class="col-4 text-end"><label class="fw-semibold" id="disc_value">0</label></div>
       </div>
-      {% if tax == True %}
+      
+      <div hidden id="idsgst">
       <div class="row mt-2 mb-2">
         <div class="col-6"><label class="fw-bold fs-6" id="label_sgst">SGST</label></div>
         <div class="col-6 text-end">
-          <label class="fw-semibold fs-6" id="sgst">0.00</label>
-          <input hidden type="text" id="sgst_text" name="sgst_text" value=0.0>
+          <label class="fw-semibold fs-6" id="sgst_text">0.00</label>
+          <input hidden type="text" id="sgst" name="sgst_text" value=0.0>
         </div>
       </div>
       <div class="row mt-2 mb-2">
         <div class="col-6"><label class="fw-bold fs-6" id="label_sgst">CGST</label></div>
         <div class="col-6 text-end">
-          <label class="fw-semibold fs-6" id="cgst">0.00</label>
-          <input hidden type="text" id="cgst_text" name="cgst_text" value=0.0>
+          <label class="fw-semibold fs-6" id="cgst_text">0.00</label>
+          <input hidden type="text" id="cgst" name="cgst_text" value=0.0>
         </div>
       </div>
-      {% else %}
-      <div class="row mt-2 mb-2">
-        <div class="col-6"><label class="fw-bold fs-6" id="label_igst">IGST</label></div>
-        <div class="col-6 text-end">
-          <label class="fw-semibold fs-6" id="igst">0.00</label>
-          <input hidden type="text" id="igst_text" name="igst_text" value=0.0>
+    </div>
+      
+      <div hidden id="idigst">
+        <div class="row mt-2 mb-2">
+          <div class="col-6"><label class="fw-bold fs-6" id="label_igst">IGST</label></div>
+          <div class="col-6 text-end">
+            <label class="fw-semibold fs-6" id="igst_text">0.00</label>
+            <input hidden type="text" id="igst" name="igst_text" value=0.0>
+          </div>
         </div>
       </div>
-      {% endif %}
       <div class="row mt-2 mb-2">
         <div class="col-4"><label class="fw-semibold fs-5">Total</label></div>
         <div class="col-2"></div>
         <div class="col-6 text-end"><label class="fw-semibold fs-5 text-danger" id="total">0.00</label></div>
-        <input hidden type="text" id="total_text" name="total_text" value=0.0>
+        <input hidden type="text" id="grandtotal" name="grandtotal" value=0.0>
       </div>
 
       <div class="row mt-2 mb-2">
@@ -237,8 +241,8 @@ New Estimate
       <div class="row mt-2 mb-3">
         <div class="col-4"><label class="fw-semibold fs-5">Balance</label></div>
         <div class="col-2"></div>
-        <div class="col-6 text-end"><label class="fw-semibold fs-6" id="balance">0.00</label></div>
-        <input hidden type="text" id="balance_text" name="balance_text" value="0.0">
+        <div class="col-6 text-end"><label class="fw-semibold fs-6" id="balance_text">0.00</label></div>
+        <input hidden type="text" id="balance" name="balance" value="0.0">
       </div>
     </div>
   </div>
