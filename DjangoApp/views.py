@@ -184,36 +184,37 @@ def estimate(request):
 		return render(request, 'estimate_pdf.html', context)
 
 	else:
-		pass
+		# pass
 
-	products = Product.objects.all().values()
-	product_list = dumps(list(products))
-	
-	customers = Customer.objects.all().values()
-	customer_list = dumps(list(customers))
-	
-	
-	
-	gst = {
-		"GST0": 0,
-		"GST5": 5,
-		"GST12": 12,
-		"GST18": 18,
-		"GST28": 28,
-	}
-	today = date.today().strftime("%d-%b-%Y")
-	tax = True #{"istate":True, "state":False}
+		products = Product.objects.all().values()
+		product_list = dumps(list(products))
+		
+		customers = Customer.objects.all().values()
+		customer_list = dumps(list(customers))
+		
+		
+		
+		gst = {
+			"GST0": 0,
+			"GST5": 5,
+			"GST12": 12,
+			"GST18": 18,
+			"GST28": 28,
+		}
+		today = date.today().strftime("%d-%b-%Y")
+		tax = True #{"istate":True, "state":False}
 
-	context = {
-		'gst':gst,
-		'tax':tax,
-		'today':today,
-		'products' : products,
-		'product_list': product_list,
-		'customers':customers,
-		'customer_list': customer_list,
-		'company_gst_code' : company_details['gstin'][:2],
-	}
+		context = {
+			'gst':gst,
+			'tax':tax,
+			'today':today,
+			'products' : products,
+			'product_list': product_list,
+			'customers':customers,
+			'customer_list': customer_list,
+			'company_gst_code' : company_details['gstin'][:2],
+		}
+		return render(request, 'estimate.html', context)
 	return render(request, 'estimate.html', context)
 
 

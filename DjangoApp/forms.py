@@ -98,3 +98,6 @@ class CustomerInsert(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(CustomerInsert, self).__init__(*args, **kwargs)
+
+
+        

@@ -14,6 +14,7 @@ class Customer(models.Model):
     taxable = models.BooleanField(default=True)
     opening_balance = models.FloatField()
     closing_balance = models.FloatField()
+    
 
     def __str__(self):
         return (f"{self.name} - {self.contact} - {self.gstin}")

@@ -10,7 +10,7 @@ function show_summary() {
 function qty_changed(){
     let index, table = document.getElementById('est_table');
     for(let i = 0; i<table.rows.length; i++) {
-        table.rows[i].cells[2].onchange = function(){
+        table.rows[i].cells[1].onchange = function(){
         index = this.parentElement.rowIndex;
         qty = Number(table.rows[index].cells[1].children[0].value);
         rate = Number(table.rows[index].cells[2].children[0].value);
@@ -22,7 +22,7 @@ function qty_changed(){
 function rate_changed(){
     let index, table = document.getElementById('est_table');
     for(let i = 0; i<table.rows.length; i++) {
-        table.rows[i].cells[3].onchange = function(){
+        table.rows[i].cells[2].onchange = function(){
         index = this.parentElement.rowIndex;
         qty = Number(table.rows[index].cells[1].children[0].value);
         rate = Number(table.rows[index].cells[2].children[0].value);
@@ -42,8 +42,8 @@ function set_total() {
     disc = Number(document.getElementById('discount').value);
     taxable_amount -= disc;
     amount = taxable_amount;
-    document.getElementById('subtotal_text').innerText = taxable_amount;
-    document.getElementById('subtotal').value = taxable_amount;
+    document.getElementById('subtotal_text').innerText = Math.round(taxable_amount);
+    document.getElementById('subtotal').value = Math.round(taxable_amount);
     
     document.getElementById('total').innerText = Math.round(amount);
     document.getElementById('grandtotal').value = Math.round(amount);
@@ -80,8 +80,8 @@ function put_discount() {
 function advance_added() {
     let amount = Number(document.getElementById('total').innerText);
     let advance = Number(document.getElementById('advance').value);
-    document.getElementById('balance_text').innerText = (amount - advance);
-    document.getElementById('balance').value = (amount - advance);
+    document.getElementById('balance_text').innerText = Math.round(amount - advance);
+    document.getElementById('balance').value = Math.round(amount - advance);
 }
 
 function delete_row() {
@@ -157,80 +157,49 @@ function calculate_taxes() {
     document.getElementById('igst_text').innerText = total_tax;
     document.getElementById('igst').value = total_tax;
     document.getElementById('applied_tax_amount').value = total_tax;
-    document.getElementById('total').innerText = Number(document.getElementById('total').innerText)+total_tax;
-    document.getElementById('grandtotal').value = Number(document.getElementById('grandtotal').value)+total_tax;
+    document.getElementById('total').innerText = Math.round(Number(document.getElementById('total').innerText)+total_tax);
+    document.getElementById('grandtotal').value = Math.round(Number(document.getElementById('grandtotal').value)+total_tax);
 
     advance_added()
 }
 
-function do_nothing() {
+function add_contact() {
+    document.getElementById('contact').value = document.getElementById("customer_contact").value;
+}
 
-    let table = document.getElementById('est_table');
-    let gst0=0.0, gst5=0.0, gst12=0.0, gst18=0.0, gst28=0.0;
-    for(let i = 1; i<table.rows.length; i++) {
-        let tax_rate = Number(table.rows[i].cells[3].children[0].value);
-        let tax_amount = Number(table.rows[i].cells[3].children[1].value);
-        // console.log(tax_rate + tax_amount)
-
-        if(tax_rate == 0) {
-            gst0 += tax_amount;
-        } else if(tax_rate == 5) {
-            gst5 += tax_amount;
-        } else if(tax_rate == 12) {
-            gst12 += tax_amount;
-        } else if(tax_rate == 18) {
-            gst18 += tax_amount;
-        } else if(tax_rate == 28) {
-            gst28 += tax_amount;
-        }
-    }    
-    if(gst0 != 0) {
-        console.log("GST0  -  "+gst0);
-    }
-    if(gst5 != 0) {
-        console.log("GST5  -  "+gst5);
-    }
-    if(gst12 != 0) {
-        console.log("GST12  -  "+gst12);
-    }
-    if(gst18 != 0) {
-        console.log("GST18  -  "+gst18);
-    }
-    if(gst28 != 0) {
-        console.log("GST28  -  "+gst28);
-    }
-    
-    
-        // console.log("GST5  -  "+gst5);
-        // console.log("GST12  -  "+gst12);
-        // console.log("GST18  -  "+gst18);
-        // console.log("GST28  -  "+gst28);
+function add_customer() {
+    document.getElementById('customer_select').setAttribute("hidden", "hidden");
     
 }
 
-let x = document.getElementById("customercontainer");
-let cust_data = JSON.parse(x.getAttribute("data-json"));
-let z = document.getElementById("gstcode");
-const company_gstcode = z.getAttribute("data");
-let sgst = true;
 function search_customer() {
+    let x = document.getElementById("customercontainer");
+    let cust_data = JSON.parse(x.getAttribute("data-json"));
+    let z = document.getElementById("gstcode");
+    const company_gstcode = z.getAttribute("data");
+    
+
     let c_search = document.getElementById("customer_select").value;
+    document.getElementById('customer').value = c_search;
+
     let c_load = document.getElementById("customer_load");
     cust_gstcode = "";
        
     for(let i=0;i<cust_data.length;i++) {
         if (c_search == "") {
-            document.getElementById("customer_load").setAttribute("hidden","hidden");
+            c_load.setAttribute("hidden","hidden");
             document.getElementById("contact_text").setAttribute("hidden","hidden");
             
         } else if(c_search == "Cash Sales" || c_search == "Cash") {
             document.getElementById("contact_text").removeAttribute("hidden");
-            document.getElementById("customer_load").setAttribute("hidden","hidden");
+            c_load.setAttribute("hidden","hidden");
+    
         } else if(c_search!="" && c_search == cust_data[i]['display_name']) {
             cust_details = cust_data[i];
             cust_gstcode = cust_details['gstin'].slice(0,2)
             
             document.getElementById("contact_text").setAttribute("hidden","hidden");
+            document.getElementById('contact').value = cust_details['contact'];
         c_load.innerHTML = `<tbody class="text-start">
         <tr class="row mx-3">
         <td class="col bg-opacity-10 bg-light">Bill To : ${ cust_details['display_name'] }</td>
@@ -238,28 +207,31 @@ function search_customer() {
         </tr>
         <tr class="row mx-3">
         <td class="col bg-opacity-10 bg-light">Contact No. : ${ cust_details['contact'] }</td>
-        
         </tr>
         
         <tr class="row mx-3">
         <td class="col bg-opacity-10 bg-light">Place of Supply : </td>
         
         </tr>
-    </tbody>`;
+        </tbody>`;
         document.getElementById("customer_load").removeAttribute("hidden");
         }
             if(cust_gstcode != "" && company_gstcode != cust_gstcode) {
                 document.getElementById('idigst').removeAttribute('hidden');
                 document.getElementById('idsgst').setAttribute('hidden','hidden');
+                document.getElementById('tax_type').value = 'igst';
             } else {
                 document.getElementById('idsgst').removeAttribute('hidden');
                 document.getElementById('idigst').setAttribute('hidden','hidden');
+                document.getElementById('tax_type').value = 'sgst';
             }
     }
 }
 
 
-
+function item_added() {
+    console.log("Item selected");
+}
 
 
 

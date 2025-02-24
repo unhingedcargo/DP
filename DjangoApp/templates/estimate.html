@@ -23,13 +23,16 @@ New Estimate
       <div class="col-6">
         <div class="input-group mb-3 mt-3">
           <span class="input-group-text fw-semibold">Customer Name</span>
-          {% comment %} <input hidden type="text" name="customer_name" class="form-control rounded-end" maxlength=20 autofocus> {% endcomment %}
-          <select name="customer" id="customer_select" class="form-select" oninput="search_customer()">
+          <input hidden type="text" name="customer" id="customer" class="form-control rounded-end" maxlength=50>
+          <select id="customer_select" class="form-select" oninput="search_customer()">
             <option selected value="">Select Customer...</option>
+            
             {% for i in customers %}
             <option value="{{ i.display_name }}">{{ i.display_name }}</option>
             {% endfor %}
+            <!-- <option class="text-primary" value="add">New Customer</option> -->
           </select>
+          <a href="#" class="ms-2" onclick="add_customer()"><img class="bg-primary rounded px-1 py-1" src="{% static 'ico/add_circle.png' %}" alt="" height=36px></a>
 
           <table hidden class="table table-bordered mt-3" id="customer_load"></table>
           <!-- <a class="bg-primary ms-3 rounded-3" href="#"><span><img class="ps-2 pe-2 pt-2" src="{% static 'ico/search.png' %}" alt="" height=30></span></a> -->
@@ -77,7 +80,8 @@ New Estimate
       <div class="col-5">
         <div class="input-group mb-3 mt-3">      
           <span class="input-group-text fw-semibold me-3">Contact No.</span>
-          <input type="text" id="customer_contact" class="form-control ms-3 rounded-end" maxlength=10>
+          <input type="text" id="customer_contact" class="form-control ms-3 rounded-end" value="" maxlength=10 oninput="add_contact()">
+          <input hidden type="text" id="contact" name="contact" value="">
         </div>
       </div>
     </div>
@@ -167,7 +171,7 @@ New Estimate
     </div>
     <div class="col text-end">
       <input type="button" class="btn btn-outline-primary" value="Show Summary" onclick="show_summary()">
-      <input hidden type="text" name="applied_tax_amount" id="applied_tax_amount" value=0>
+      <input hidden type="text" name="total_tax_amount" id="applied_tax_amount" value=0>
     </div>
   </div>
   <div hidden class="row mb-4 me-1" id="summary_tag">
@@ -178,7 +182,7 @@ New Estimate
         <div class="col-2"></div>
         <div class="col-6 text-end">
           <label class="fw-semibold fs-5" id="subtotal_text">0.00</label>
-          <input hidden type="text" id="subtotal" name="subtotal_text" value=0.0>
+          <input hidden type="text" id="subtotal" name="subtotal" value=0.0>
           <!-- <input type="text" class="form-control"> -->
         </div>
       </div>
@@ -199,14 +203,14 @@ New Estimate
         <div class="col-6"><label class="fw-bold fs-6" id="label_sgst">SGST</label></div>
         <div class="col-6 text-end">
           <label class="fw-semibold fs-6" id="sgst_text">0.00</label>
-          <input hidden type="text" id="sgst" name="sgst_text" value=0.0>
+          <input hidden type="text" id="sgst" name="sgst" value=0.0>
         </div>
       </div>
       <div class="row mt-2 mb-2">
         <div class="col-6"><label class="fw-bold fs-6" id="label_sgst">CGST</label></div>
         <div class="col-6 text-end">
           <label class="fw-semibold fs-6" id="cgst_text">0.00</label>
-          <input hidden type="text" id="cgst" name="cgst_text" value=0.0>
+          <input hidden type="text" id="cgst" name="cgst" value=0.0>
         </div>
       </div>
     </div>
@@ -216,7 +220,7 @@ New Estimate
           <div class="col-6"><label class="fw-bold fs-6" id="label_igst">IGST</label></div>
           <div class="col-6 text-end">
             <label class="fw-semibold fs-6" id="igst_text">0.00</label>
-            <input hidden type="text" id="igst" name="igst_text" value=0.0>
+            <input hidden type="text" id="igst" name="igst" value=0.0>
           </div>
         </div>
       </div>
@@ -225,10 +229,11 @@ New Estimate
         <div class="col-2"></div>
         <div class="col-6 text-end"><label class="fw-semibold fs-5 text-danger" id="total">0.00</label></div>
         <input hidden type="text" id="grandtotal" name="grandtotal" value=0.0>
+        <input hidden type="text" id="tax_type" name="tax_type" value="">
       </div>
 
       <div class="row mt-2 mb-2">
-        <div class="col-4"><label class="fw-semibold fs-5">Advance</label></div>
+        <div class="col-4"><label class="fw-semibold fs-5">Payment made</label></div>
         <div class="col-4"></div>
         <div class="col-4 text-end"><input type="text" class="form-control text-end" value=0.0 id="advance" name="advance" maxlength=7 onchange="advance_added()"></div>
       </div>
