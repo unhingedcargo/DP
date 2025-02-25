@@ -23,16 +23,15 @@ New Estimate
       <div class="col-6">
         <div class="input-group mb-3 mt-3">
           <span class="input-group-text fw-semibold">Customer Name</span>
-          <input hidden type="text" name="customer" id="customer" class="form-control rounded-end" maxlength=50>
-          <select id="customer_select" class="form-select" oninput="search_customer()">
+          <input type="text" name="customer" id="customer" class="form-control rounded-end" maxlength=50 onblur="search_customer()">
+          <select hidden id="customer_select" class="form-select rounded" oninput="search_customer()">
             <option selected value="">Select Customer...</option>
-            
             {% for i in customers %}
-            <option value="{{ i.display_name }}">{{ i.display_name }}</option>
+              <option value="{{ i.display_name }}">{{ i.display_name }}</option>
             {% endfor %}
             <!-- <option class="text-primary" value="add">New Customer</option> -->
           </select>
-          <a href="#" class="ms-2" onclick="add_customer()"><img class="bg-primary rounded px-1 py-1" src="{% static 'ico/add_circle.png' %}" alt="" height=36px></a>
+          <a href="#" class="ms-2" onclick="add_customer()"><img id="btn-add-customer" class="bg-primary rounded px-1 py-1" src="{% static 'ico/add_circle.png' %}" alt="" height=36px></a>
 
           <table hidden class="table table-bordered mt-3" id="customer_load"></table>
           <!-- <a class="bg-primary ms-3 rounded-3" href="#"><span><img class="ps-2 pe-2 pt-2" src="{% static 'ico/search.png' %}" alt="" height=30></span></a> -->
@@ -74,9 +73,8 @@ New Estimate
 <!-- Modal Ends here -->
         </div>
       </div>
-    </div>
 
-    <div hidden class="row" id="contact_text">
+    <div class="row" id="contact_text">
       <div class="col-5">
         <div class="input-group mb-3 mt-3">      
           <span class="input-group-text fw-semibold me-3">Contact No.</span>
@@ -85,6 +83,7 @@ New Estimate
         </div>
       </div>
     </div>
+  </div>
 
     <div class="row" id="est_header">
       <div class="col-3">
@@ -136,15 +135,15 @@ New Estimate
             </td>
 
             <td>
-              <input type="text" name="qty" id="qty" class="form-control text-end" maxlength=5 value=0.0 onchange="qty_changed()">
+              <input type="text" name="qty" id="qty" class="form-control text-end" maxlength=5 value=0.0 onchange="item_update()">
             </td>
 
             <td>
-              <input type="text" name="rate" id="rate" class="form-control text-end" maxlength=5 value=0.0 onchange="rate_changed()">
+              <input type="text" name="rate" id="rate" class="form-control text-end" maxlength=5 value=0.0 onchange="item_update()">
             </td>
 
             <td id="table_tax_list">
-              <select class="form-select" name="tax_rate" id="tax_rate" onchange="tax_applied()">
+              <select class="form-select" name="tax_rate" id="tax_rate" onchange="item_update()">
                 <option selected value="">Select tax</option>
                 {% for k, i in gst.items %}
                 <option value="{{i}}">{{k}} [{{i}}%]</option>
@@ -254,7 +253,7 @@ New Estimate
   <div class="text-center mb-4">
     
     <input type="submit" value="Submit" class="btn btn-primary">
-    <a href="#" id="do_nothing" class="btn btn-outline-danger" onclick="do_nothing()">Do Nothing</a>
+    <a href="{% url 'estimate' %}" id="do_nothing" class="btn btn-outline-secondary">Clear</a>
 
 </div>
 

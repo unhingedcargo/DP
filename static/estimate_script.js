@@ -7,7 +7,7 @@ function show_summary() {
     }
 }
 
-function qty_changed(){
+function item_update() {
     let index, table = document.getElementById('est_table');
     for(let i = 0; i<table.rows.length; i++) {
         table.rows[i].cells[1].onchange = function(){
@@ -16,19 +16,22 @@ function qty_changed(){
         rate = Number(table.rows[index].cells[2].children[0].value);
         document.getElementById('est_table').rows[index].cells[4].children[0].value = Number(qty*rate).toFixed(2);
         }
-    }
-}
-
-function rate_changed(){
-    let index, table = document.getElementById('est_table');
-    for(let i = 0; i<table.rows.length; i++) {
         table.rows[i].cells[2].onchange = function(){
         index = this.parentElement.rowIndex;
         qty = Number(table.rows[index].cells[1].children[0].value);
         rate = Number(table.rows[index].cells[2].children[0].value);
         document.getElementById('est_table').rows[index].cells[4].children[0].value = Number(qty*rate).toFixed(2);
         }
+        table.rows[i].cells[3].onchange = function(){
+        index = this.parentElement.rowIndex;
+        qty = Number(table.rows[index].cells[1].children[0].value);
+        rate = Number(table.rows[index].cells[2].children[0].value);
+        tax_rate = Number(table.rows[index].cells[3].children[0].value);
+        tax = (tax_rate/100);
+        table.rows[index].cells[3].children[1].value = Number(qty*rate*tax).toFixed(2);
+        }
     }
+
 }
 
 function set_total() {
@@ -48,22 +51,8 @@ function set_total() {
     document.getElementById('total').innerText = Math.round(amount);
     document.getElementById('grandtotal').value = Math.round(amount);
     advance_added()
-    tax_applied()
+    item_update()
     calculate_taxes()
-}
-
-function tax_applied() {
-    let index, table = document.getElementById('est_table');
-    for(let i = 0; i<table.rows.length; i++) {
-        table.rows[i].cells[3].onchange = function(){
-        index = this.parentElement.rowIndex;
-        qty = Number(table.rows[index].cells[1].children[0].value);
-        rate = Number(table.rows[index].cells[2].children[0].value);
-        tax_rate = Number(table.rows[index].cells[3].children[0].value);
-        tax = (tax_rate/100);
-        table.rows[index].cells[3].children[1].value = Number(qty*rate*tax).toFixed(2);
-        }
-    }
 }
 
 function put_discount() {
@@ -102,7 +91,6 @@ function delete_row() {
 function add_row() {
     const item_html = document.getElementById('table_item_list').outerHTML;
     const tax_html = document.getElementById('table_tax_list').outerHTML;
-    const table_body = document.getElementById("est_table_body").innerHTML;
     const table = document.getElementById('est_table');
     
     const newRow = table.insertRow();
@@ -114,8 +102,6 @@ function add_row() {
     const cell4 = newRow.insertCell(4);
     const cell5 = newRow.insertCell(5);
     
-
-
     cell0.innerHTML = cell0.innerHTML + item_html;
     cell1.innerHTML = cell1.innerHTML + `<td> <input type="text" name="qty" id="qty" class="form-control text-end" maxlength=5 value=0.0 onchange="qty_changed()"> </td>`;
     cell2.innerHTML = cell2.innerHTML + `<td> <input type="text" name="rate" id="rate" class="form-control text-end" maxlength=5 value=0.0 onchange="rate_changed()"> </td>`;
@@ -150,6 +136,7 @@ function calculate_taxes() {
     }
     total_tax = gst0+gst5+gst12+gst18+gst28;
     taxes = [gst0, gst5, gst12, gst18, gst28];
+    console.log(taxes);
     document.getElementById('sgst_text').innerText = Number(total_tax/2).toFixed(2);
     document.getElementById('sgst').value = Number(total_tax/2).toFixed(2);
     document.getElementById('cgst_text').innerText = Number(total_tax/2).toFixed(2);
@@ -168,8 +155,20 @@ function add_contact() {
 }
 
 function add_customer() {
-    document.getElementById('customer_select').setAttribute("hidden", "hidden");
-    
+    if(document.getElementById('customer_select').attributes['hidden'] == undefined) {
+        document.getElementById('customer_select').setAttribute("hidden", "hidden");
+        document.getElementById('btn-add-customer').attributes['class'].value = "bg-primary rounded px-1 py-1";
+        document.getElementById('btn-add-customer').attributes['src'].value = "/static/ico/add_circle.png";
+        document.getElementById('customer').removeAttribute("hidden");
+        document.getElementById("contact_text").removeAttribute("hidden");
+    } else {
+        document.getElementById('btn-add-customer').attributes['class'].value = "bg-light rounded px-1 py-1";
+        document.getElementById('btn-add-customer').attributes['src'].value = "/static/ico/add_circle_blue.svg";
+        
+        document.getElementById('customer_select').removeAttribute("hidden");
+        document.getElementById('customer').setAttribute("hidden", "hidden");
+        document.getElementById("contact_text").setAttribute("hidden", "hidden");
+    }
 }
 
 function search_customer() {
@@ -178,17 +177,18 @@ function search_customer() {
     let z = document.getElementById("gstcode");
     const company_gstcode = z.getAttribute("data");
     
-
     let c_search = document.getElementById("customer_select").value;
+    if (c_search != "") {
     document.getElementById('customer').value = c_search;
+    }
 
     let c_load = document.getElementById("customer_load");
-    cust_gstcode = "";
+    let cust_gstcode = "";
        
     for(let i=0;i<cust_data.length;i++) {
         if (c_search == "") {
             c_load.setAttribute("hidden","hidden");
-            document.getElementById("contact_text").setAttribute("hidden","hidden");
+            // document.getElementById("contact_text").setAttribute("hidden","hidden");
             
         } else if(c_search == "Cash Sales" || c_search == "Cash") {
             document.getElementById("contact_text").removeAttribute("hidden");
@@ -209,10 +209,6 @@ function search_customer() {
         <td class="col bg-opacity-10 bg-light">Contact No. : ${ cust_details['contact'] }</td>
         </tr>
         
-        <tr class="row mx-3">
-        <td class="col bg-opacity-10 bg-light">Place of Supply : </td>
-        
-        </tr>
         </tbody>`;
         document.getElementById("customer_load").removeAttribute("hidden");
         }
